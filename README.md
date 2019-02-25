@@ -1,25 +1,30 @@
 ![Art Institute of Chicago](https://raw.githubusercontent.com/Art-Institute-of-Chicago/template/master/aic-logo.gif)
 
 
-# Collections Data Service
-> A slim API in front of our collections management system
+# Assets Data Service
+> A slim API in front of our digital asset management system
+
+As of February 2019, we're beginning to transition this data service from
+providing both assets and collections data to just assets data. We'll soon be
+removing all the collections data references from this repo, and it will instead
+be provided by `data-service-collections`.
 
 Most data that this API provides is already available through the Art Institute of
-Chicago's public Solr index. This project aims to make interacting with our data in 
-Solr easier. Clients don't have to know how to filter data to retrieve different 
-object types, or details of the mechanisms of our Solr instance. They have a few simple 
-endpoints to retrieve the data they're most likely going to need. 
+Chicago's public Solr index. This project aims to make interacting with our data in
+Solr easier. Clients don't have to know how to filter data to retrieve different
+object types, or details of the mechanisms of our Solr instance. They have a few simple
+endpoints to retrieve the data they're most likely going to need.
 
-This API was built in-house and is maintained by in-house developers. It is 
-planned to go to production in 2017. 
+This API was built in-house and is maintained by in-house developers. It is
+planned to go to production in 2017.
 
 
 ## Features
 
-This project provides a few simple endpoints. You can see them all in our 
+This project provides a few simple endpoints. You can see them all in our
 [API Blueprint](tests/apiary.apib). But here are a few major ones:
 
-* `/v1/artworks` - Get a list of all artworks, sorted by the date they were 
+* `/v1/artworks` - Get a list of all artworks, sorted by the date they were
   last updated in descending order. Includes pagination options.
 * `/v1/artworks/X` - Get a single artwork
 * `/v1/artists` - Get a list of all artists, in the same manner as `/artworks/`.
@@ -30,10 +35,10 @@ This project provides a few simple endpoints. You can see them all in our
 
 ## Overview
 
-This API is part of a larger project at the Art Institute of Chicago to build a data hub 
-for all of our published data--a single point that our forthcoming website and future 
+This API is part of a larger project at the Art Institute of Chicago to build a data hub
+for all of our published data--a single point that our forthcoming website and future
 products can access all the data they might be interested in in a simple, normalized, RESTful
-way. This project provides an API in front of our collections that will feed into the 
+way. This project provides an API in front of our collections that will feed into the
 data hub.
 
 
@@ -64,8 +69,8 @@ bundle install
 npm install
 ```
 
-Each `install` command uses the languages package managers to install this project's 
-dependencies. 
+Each `install` command uses the languages package managers to install this project's
+dependencies.
 
 
 ## Configuration
@@ -82,10 +87,10 @@ To run this project on a local server, use the command:
 ```shell
 shotgun
 ```
- 
+
 This will spin up this project on a local server on port `9393`. You can hit
-all the endpoints at `localhost:9393/v1`.Shotgun allows you to make changes to 
-the code and see them reflected without needing to restart the server. If this is not 
+all the endpoints at `localhost:9393/v1`.Shotgun allows you to make changes to
+the code and see them reflected without needing to restart the server. If this is not
 a necessity for you, you can also start up the server with the following command:
 
 ```shell
@@ -105,12 +110,12 @@ npm run dredd
 ```
 
 This will run through our [API Blueprint](tests/apiary.apib) document,
-construct requests for each documented response, and execute the query to 
+construct requests for each documented response, and execute the query to
 verify that the documented response is actually what is received.
 
 ## Contributing
 
-We encourage your contributions. Please fork this repository and make your changes in 
+We encourage your contributions. Please fork this repository and make your changes in
 a separate branch. We like to use [git-flow](https://github.com/nvie/gitflow) to make this process easier.
 
 ```bash
@@ -133,10 +138,10 @@ git flow start feature yourinitials-good-description-issuenumberifapplicable
 git push origin yourinitials-good-description-issuenumberifapplicable
 ```
 
-Then on github.com, create a Pull Request to merge your changes into our 
-`develop` branch. 
+Then on github.com, create a Pull Request to merge your changes into our
+`develop` branch.
 
-This project is released with a Contributor Code of Conduct. By participating in 
+This project is released with a Contributor Code of Conduct. By participating in
 this project you agree to abide by its [terms](CODE_OF_CONDUCT.md).
 
 We also welcome bug reports and questions under GitHub's [Issues](issues).
@@ -144,5 +149,5 @@ We also welcome bug reports and questions under GitHub's [Issues](issues).
 
 ## Licensing
 
-This project is licensed under the [GNU Affero General Public License 
+This project is licensed under the [GNU Affero General Public License
 Version 3](LICENSE).
