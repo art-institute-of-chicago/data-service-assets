@@ -115,6 +115,10 @@ class ResourceModel < BaseModel
     ret[:rep_of_artworks] = []
     ret[:rep_of_exhibitions] = []
 
+    # For tracking modifications to content
+    ret[:content_e_tag] = data.get(:contentETag, false)
+    ret[:content_modified_at] = data.get(:contentLastModified, false)
+
     # Uncomment for debug:
     # ret[:is_doc_of_ids] = doc_of_uids
 
