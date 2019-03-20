@@ -100,6 +100,8 @@ class Artwork < BaseModel
 
     ret[:fiscal_year] = fy
 
+    ret[:internal_department_id] = str2int( data.get(:department_uid) )
+
     # TODO: Change this to publishCategory_citiUid once that's available
     ret[:category_ids] = data.get(:published_category_i, false)
 
