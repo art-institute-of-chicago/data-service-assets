@@ -12,7 +12,11 @@ class Delete < BaseModel
     data.extend LakeUnwrapper
 
     ret = {}
-    ret[:lake_guid] = data.get(:id, false).split(/\//).first
+
+    # [UUID]/files/access_master (probably) means the binary file has been deleted
+    # ret[:lake_guid] = data.get(:id, false).split(/\//).first
+
+    ret[:lake_guid] = data.get(:id, false)
     ret[:indexed_at] = data.get(:timestamp, false).to_time(:utc).iso8601 rescue nil
 
     ret
