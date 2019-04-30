@@ -59,16 +59,15 @@ class ResourceModel < BaseModel
 
     if ret == nil && !(data.get(:type, false).include? 'http://definitions.artic.edu/ontology/1.0/type/StillImage')
       uri_raw = 'https://lakeimagesweb.artic.edu/assets/' + data.get(:id, false)
-      uri = URI.parse(uri_raw)
-
-      response = nil
-      Net::HTTP.start(uri.host, 443, :use_ssl => true) {|http|
-        response = http.head(uri.path)
-      }
-
-      if response.kind_of? Net::HTTPSuccess
-        ret = uri_raw
-      end
+      ret = uri_raw
+      # uri = URI.parse(uri_raw)
+      # response = nil
+      # Net::HTTP.start(uri.host, 443, :use_ssl => true) {|http|
+      #   response = http.head(uri.path)
+      # }
+      # if response.kind_of? Net::HTTPSuccess
+      #   ret = uri_raw
+      # end
     end
 
     ret
