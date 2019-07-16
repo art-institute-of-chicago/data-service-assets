@@ -10,90 +10,19 @@
 + modified_at (required)
 + indexed_at (required)
 
-### Artwork
-+ Include Common
-+ date_display (required)
-+ date_start (number, required)
-+ date_end (number, required)
-+ creator_id (number, required)
-+ creator_display (required)
-+ image_guid (required)
-+ location (required)
-+ department_id (number, required)
-+ dimensions (required)
-+ medium (required)
-+ credit_line (required)
-+ copyright (nullable, required)
-+ inscriptions (nullable, required)
-+ publications (nullable, required)
-+ provenance (nullable, required)
-+ category_ids (array, required)
-+ document_guids (array, required)
-
-### Artist
-+ Include Common
-+ date_birth (number, required)
-+ date_death (number, required)
-
-### Gallery
-+ Include Common
-+ closed (boolean, required)
-+ number (required)
-+ floor (required)
-+ latitude (number, required)
-+ longitude (number, required)
-
-### Department
-+ Include Common
-
-### Category
-+ Include Common
-+ description (string, required)
-+ is_in_nav (boolean, required)
-+ parent_id (number, nullable, required)
-+ sort (number, required)
-+ type (number, required)
-
-### Agent Type
-+ Include Common
-
-### Curriculum
-+ Include Common
-
-### Grade Level
-+ Include Common
-
 ### Image
 + Include Common
++ rep_of_artworks (required)
++ rep_of_exhibitions (required)
 
-### Artwork Agent
+### Sound
 + Include Common
-+ is_preferred (boolean, required)
-+ agent_id (number, nullable, required)
 
-### Artwork Catalog
+### Text
 + Include Common
-+ is_preferred (boolean, required)
 
-### Artwork Copyright Representative
+### Video
 + Include Common
-+ is_preferred (boolean, required)
-
-### Artwork Date
-+ Include Common
-+ is_preferred (boolean, required)
-
-### Artwork Place
-+ Include Common
-+ is_preferred (boolean, required)
-
-### Artwork Term
-+ Include Common
-+ is_preferred (boolean, required)
-
-### Artwork Title
-+ Include Common
-+ is_preferred (boolean, required)
 
 ### Error
 + status (number)

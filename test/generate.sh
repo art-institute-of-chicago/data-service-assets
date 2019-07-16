@@ -27,28 +27,10 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 # FIELDS: singular, plural, two valid IDs
 
 MODELS=(
-	"artwork,       artworks,       111628,         79307     "
-	"artist,        artists,        40610,          9287      "
-	# "agent,        agents,        40610,          9287      "
-	"gallery,       galleries,      2147483604,     2147477833"
-	"department,    departments,    86,             941       "
-	"category,      categories,     153,            111       "
-	"agent-type,    agent-types,    26,             20        "
-
-	"curriculum,    curriculums,    4,              3         "
-	"grade-level,   grade-levels,   1,              2         "
-
-	"artwork-agent,     artwork-agents,     543373,   574002 "
-	"artwork-catalog,   artwork-catalogs,   2308,     1507   "
-	"artwork-date,      artwork-dates,      198268,   180814 "
-	"artwork-place,     artwork-places,     275499,   275498 "
-	"artwork-term,      artwork-terms,      1151012,  576461 "
-	"artwork-title,     artwork-titles,     283998,   165982 "
-
-	# Bit of a mouthfull
-	"artwork-copyright-representative,   artwork-copyright-representatives,   458508,              458464         "
-
 	"image, images, 39d43108-e690-2705-67e2-a16dc28b8c7f, c418c213-c246-1883-cd09-ca8496c69c9a"
+	"sound, sounds, ca6313d3-ecc4-8e21-66b5-421a484a9886, 91f6ccbe-471f-b1ef-4505-67af127e626c"
+	"text,  texts,  16f17e2b-5c8c-8640-59be-ece0cd06d0ae, c9bdc993-5c4b-edab-4889-9ba7ccd471c9"
+	"video, videos, c051f71e-2b69-ac68-9aa8-99410d91f3f3, eb06edce-6f2e-727c-0cee-a32cef589911"
 )
 
 DESTINATION="apiary.apib";

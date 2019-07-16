@@ -110,47 +110,11 @@ module Collections
 
     end
 
-    self.addResource( Artwork )
-    self.addResource( Agent )
-    self.addResource( Artist )
-    self.addResource( Place )
-    self.addResource( Gallery )
-    self.addResource( Exhibition )
-    self.addResource( Department )
-    self.addResource( Category )
-    self.addResource( AgentType )
-    self.addResource( Curriculum )
-    self.addResource( GradeLevel )
-    self.addResource( ObjectType )
-
     # Assets
+    self.addResource( Image )
     self.addResource( Sound )
     self.addResource( Video )
     self.addResource( Text )
-    self.addResource( Link )
-    self.addResource( Image )
-
-    # Artwork-to-Foobar pivot models
-    self.addResource( ArtworkAgent )
-    self.addResource( ArtworkCatalogue )
-    self.addResource( ArtworkDate )
-    self.addResource( ArtworkPlace )
-
-    self.addResource( ArtworkAgentRole )
-    self.addResource( ArtworkDateQualifier )
-    self.addResource( ArtworkPlaceQualifier )
-
-    self.addResource( Catalogue )
-    self.addResource( Group )
-    self.addResource( Term )
-    self.addResource( TermType )
-
-    # Exhibition-to-Foobar pivot models
-    self.addResource( ExhibitionAgent )
-    self.addResource( ExhibitionArtwork )
-
-    # Agent-to-Foobar pivot models
-    self.addResource( AgentType )
 
     # List of deleted models
     self.addResource( Delete )
