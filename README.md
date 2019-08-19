@@ -110,7 +110,7 @@ We are not accepting contributions to this repository at this time as it this co
 
 This project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its [terms](CODE_OF_CONDUCT.md).
 
-We welcome bug reports and questions under GitHub's [Issues](issues). For other concerns, you can reach our engineering team at [mailto:engineering@artic.edu](engineering@artic.edu)
+We welcome bug reports and questions under GitHub's [Issues](issues). For other concerns, you can reach our engineering team at [engineering@artic.edu](mailto:engineering@artic.edu)
 
 ## Licensing
 
