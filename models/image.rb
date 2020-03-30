@@ -5,8 +5,7 @@ class Image < ResourceModel
 
   def initialize
     super
-    # TODO: Several internal images snuck into the LPM, but don't appear in the LPM IIIF
-    self.fq = 'type:*StillImage -type:*InternalUseOnly'
+    self.fq = 'type:*StillImage'
   end
 
   def transform( data, ret )
