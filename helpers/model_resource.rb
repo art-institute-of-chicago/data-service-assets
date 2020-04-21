@@ -118,7 +118,12 @@ class ResourceModel < BaseModel
     ret[:content_e_tag] = data.get(:contentETag, false)
     ret[:content_modified_at] = data.get(:contentLastModified, false)
 
-    ret[:credit_line] = (data.get(:altLabel, false) || Array.new).keep_if {|v| v =~ /^Credit:/}.shift
+    ret[:credit_line] = nil
+    creditLine = data.get(:altLabel, false).keep_if {|v| v =~ /^Credit:/}.shift rescue nil
+    if creditLine
+      creditLineLen = creditLine.length
+      ret[:credit_line] = creditLine[7..creditLineLen].lstrip rescue nil
+    end
 
     # Uncomment for debug:
     # ret[:is_doc_of_ids] = doc_of_uids
