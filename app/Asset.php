@@ -50,11 +50,11 @@ class Asset extends AbstractModel
     public function fillFrom($source)
     {
         $this->id = $source->id;
-        $this->type = head($source->attributes->assetType_pub) ?? null;
         //$this->checksum = head($source->attributes->checksum_pub) ?? null;
+        $this->type = head($source->attributes->assetType_pub);
         //$this->external_website = head($source->attributes->externalWebsite_pub);
-        $this->alt_text = head($source->attributes->{'Alt tag'}) ?? null;
-        $this->publish_status = $source->attributes->{'Publish status'} ?? [];
+        $this->alt_text = head($source->attributes->{'Alt tag'});
+        $this->publish_status = $source->attributes->{'Publish status'};
         $this->source_modified_at = new Carbon(head($source->attributes->modificationDate_pub), 'America/Chicago') ?? null;
     }
 
