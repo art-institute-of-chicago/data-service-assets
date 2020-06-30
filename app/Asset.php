@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Asset extends AbstractModel
 {
 
-    use SourceCallable;
+    use SourceCallable, Singletonable;
 
     protected $dates = [
         'source_modified_at',
@@ -17,6 +17,12 @@ class Asset extends AbstractModel
     protected $casts = [
         'publish_status' => 'array',
     ];
+
+    public static $types = [
+        'Image',
+        'Document',
+    ];
+
 
     public function callGetAssets($type = 'Image', $page = 1)
     {
