@@ -21,6 +21,8 @@ class Asset extends AbstractModel
     public static $types = [
         'Image',
         'Document',
+        'Audio',
+        'Video'
     ];
 
 
