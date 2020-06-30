@@ -59,7 +59,7 @@ class Asset extends AbstractModel
         $this->type = head($source->attributes->assetType_pub);
         $this->file_name = $source->file->name;
         $this->file_size = $source->file->size;
-        //$this->external_website = head($source->attributes->externalWebsite_pub);
+        $this->external_website = head($source->attributes->{'Related website'});
         $this->alt_text = head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
         $this->source_modified_at = new Carbon(head($source->attributes->modificationDate_pub), 'America/Chicago') ?? null;
