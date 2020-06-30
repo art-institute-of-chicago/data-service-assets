@@ -50,8 +50,9 @@ class Asset extends AbstractModel
     public function fillFrom($source)
     {
         $this->id = $source->id;
-        //$this->checksum = head($source->attributes->checksum_pub) ?? null;
         $this->type = head($source->attributes->assetType_pub);
+        $this->file_name = $source->file->name;
+        $this->file_size = $source->file->size;
         //$this->external_website = head($source->attributes->externalWebsite_pub);
         $this->alt_text = head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
