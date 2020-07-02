@@ -58,15 +58,23 @@ class Asset extends AbstractModel
     public function fillFrom($source)
     {
         $this->id = $source->id;
-        $this->type = head($source->attributes->assetType_pub);
+        $this->title = $source->name;
+        $this->type = $this->head($source->attributes->assetType_pub);
         $this->file_name = $source->file->name;
         $this->file_size = $source->file->size;
-        $this->external_website = head($source->attributes->{'Related website'});
-        $this->alt_text = head($source->attributes->{'Alt tag'});
+        $this->external_website = $this->head($source->attributes->{'Related website'});
+        $this->alt_text = $this->head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
-        $this->source_modified_at = new Carbon(head($source->attributes->modificationDate_pub), 'America/Chicago') ?? null;
+        $this->copyright_notice = $this->head($source->attributes->{'Copyright notice'});
+        $this->source_modified_at = new Carbon($this->head($source->attributes->modificationDate_pub), 'America/Chicago') ?? null;
     }
 
+    private function head($array = []) {
+        if (empty($array)) {
+            return null;
+        }
+        return head($array);
+    }
 
     private function buildQuery($authKey, $type, $page = 1)
     {
