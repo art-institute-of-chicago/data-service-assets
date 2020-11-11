@@ -112,7 +112,8 @@ class Asset extends AbstractModel
                     'data' => [
                         'asset.base',
                         'asset.attributes',
-                        'asset.relatedFolders',
+                        // TODO: Do we need this? Opportunity to make response lighter?
+                        // 'asset.folders',
                         'asset.file'
                     ]
                 ]
