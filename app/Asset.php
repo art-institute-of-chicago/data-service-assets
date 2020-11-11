@@ -65,7 +65,7 @@ class Asset extends AbstractModel
         $this->alt_text = $this->head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
         $this->copyright_notice = $this->head($source->attributes->{'Copyright notice'});
-        $this->source_modified_at = new Carbon($this->head($source->attributes->modificationDate_pub), 'America/Chicago') ?? null;
+        $this->source_modified_at = new Carbon($source->modDate/1000, 'America/Chicago') ?? null;
     }
 
     private function head($array = []) {
@@ -102,7 +102,7 @@ class Asset extends AbstractModel
                 ],
                 [
                     'sort' => [
-                        'field' => 'modificationDate_pub',
+                        'field' => 'modDate',
                         'order' => 'desc'
                     ],
                     'page' => [
