@@ -52,6 +52,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
+         * Vendor service providers
+         */
+        MarkTopper\DoctrineDBALTimestampType\Laravel5ServiceProvider::class,
+
+        /*
          * Foundation Service Providers...
          */
         Aic\Hub\Foundation\DefaultConfigServiceProvider::class,
