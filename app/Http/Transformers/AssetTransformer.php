@@ -3,7 +3,6 @@
 namespace App\Http\Transformers;
 
 use Aic\Hub\Foundation\AbstractTransformer;
-use Hash;
 
 class AssetTransformer extends AbstractTransformer
 {
@@ -19,7 +18,7 @@ class AssetTransformer extends AbstractTransformer
             'is_educational_resource' => collect($asset->publish_status)->contains('Educational Resources'),
             'is_multimedia_resource' => collect($asset->publish_status)->contains('Multimedia'),
             'is_teacher_resource' => collect($asset->publish_status)->contains('Teacher Resources'),
-            'content_e_tag' => Hash::make($asset->file_name . '|' . $asset->file_size),
+            'content_e_tag' => $asset->checksum,
             'credit_line' => $asset->copyright_notice,
             'source_modified_at' => $asset->source_modified_at->toIso8601String(),
             'created_at' => $asset->created_at->toIso8601String(),
