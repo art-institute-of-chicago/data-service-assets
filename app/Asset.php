@@ -26,10 +26,10 @@ class Asset extends AbstractModel
     ];
 
 
-    public function callGetAssets($type = 'Image', $page = 1)
+    public function callGetAssets(string $type, int $page, Carbon $since)
     {
         $authKey = $this->authenticate();
-        $request = $this->buildQuery($authKey, $type, $page);
+        $request = $this->buildQuery($authKey, $type, $page, $since);
         $response = $this->call($request);
         $results = $this->parseResult($response);
 
@@ -75,7 +75,7 @@ class Asset extends AbstractModel
         return head($array);
     }
 
-    private function buildQuery($authKey, $type, $page = 1)
+    private function buildQuery(string $authKey, string $type, int $page, Carbon $since)
     {
         $request = [
             'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date("Y-m-d_H:i:s"),
@@ -97,7 +97,17 @@ class Asset extends AbstractModel
                                 'attribute' => 'assetType_pub',
                                 'value' => $type
                             ]
-                        ]
+                        ],
+                        [
+                            'operator' => 'and',
+                            'range' => [
+                                'field' => 'modDate',
+                                'min' => $since->timestamp * 1000, // microseconds, not milliseconds
+                                'max' => null,
+                                'includeMin' => true,
+                                'includeMax' => false,
+                            ]
+                        ],
                     ]
                 ],
                 [
