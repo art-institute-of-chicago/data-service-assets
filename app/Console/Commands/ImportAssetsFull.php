@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Asset;
+use App\Command;
 
-class ImportAssetsFull extends AbstractCommand
+class ImportAssetsFull extends ImportAssets
 {
 
     protected $signature = 'import:assets-full';
@@ -13,18 +13,9 @@ class ImportAssetsFull extends AbstractCommand
 
     public function handle()
     {
-        foreach (Asset::$types as $type) {
-            $page = 1;
-            $assets = Asset::instance()->callGetAssets($type, $page);
-            while ($assets->isNotEmpty()) {
-                $assets->each(function ($item, $key) {
-                    $item->save();
-                });
+        $this->since = Command::never();
 
-                $page++;
-                $assets = Asset::instance()->callGetAssets($type, $page);
-            }
-        }
+        parent::handle();
     }
 
 }
