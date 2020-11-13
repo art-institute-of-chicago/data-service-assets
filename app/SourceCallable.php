@@ -35,6 +35,10 @@ trait SourceCallable
         curl_setopt($ch, CURLOPT_POSTFIELDS,     $request );
         curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: application/json'));
 
+        // WEB-874: If connection or response take longer than 30 seconds, give up
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
         // TODO: Fix this networking error on target server?
         // Curl error: Unable to communicate securely with peer: requested domain name does not match the server's certificate.
         // if (config('app.env') == 'local') {
