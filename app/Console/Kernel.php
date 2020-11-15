@@ -8,6 +8,11 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
+     * WEB-874: Make commands never overlap.
+     */
+    private const FOR_ONE_YEAR = 525600;
+
+    /**
      * Use this to import third-party Artisan commands.
      *
      * @var array
@@ -24,7 +29,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        $schedule->command('import:assets')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
