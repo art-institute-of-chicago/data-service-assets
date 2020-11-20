@@ -25,6 +25,25 @@ class Asset extends AbstractModel
         'Video'
     ];
 
+    public function scopeImages($query)
+    {
+        return $query->where('type','Image');
+    }
+
+    public function scopeTexts($query)
+    {
+        return $query->where('type','Document');
+    }
+
+    public function scopeSounds($query)
+    {
+        return $query->where('type','Audio');
+    }
+
+    public function scopeVideos($query)
+    {
+        return $query->where('type','Video');
+    }
 
     public function callGetAssets(string $type, int $page, Carbon $since)
     {
