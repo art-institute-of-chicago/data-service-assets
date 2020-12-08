@@ -84,7 +84,7 @@ class Asset extends AbstractModel
         $this->alt_text = $this->head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
         $this->copyright_notice = $this->head($source->attributes->{'Copyright notice'});
-        $this->source_modified_at = new Carbon($source->modDate/1000, 'America/Chicago') ?? null;
+        $this->source_modified_at = isset($source->modDate) ? Carbon::createFromTimestamp($source->modDate/1000) : null;
     }
 
     private function head($array = []) {
