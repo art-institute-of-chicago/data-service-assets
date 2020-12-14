@@ -45,10 +45,10 @@ class Asset extends AbstractModel
         return $query->where('type','Video');
     }
 
-    public function callGetAssets(string $type, int $page, Carbon $since)
+    public function callGetAssets(string $type, int $page, int $perPage, Carbon $since)
     {
         $authKey = $this->authenticate();
-        $request = $this->buildQuery($authKey, $type, $page, $since);
+        $request = $this->buildQuery($authKey, $type, $page, $perPage, $since);
         $response = $this->call($request);
         $results = $this->parseResult($response);
 
@@ -94,7 +94,7 @@ class Asset extends AbstractModel
         return head($array);
     }
 
-    private function buildQuery(string $authKey, string $type, int $page, Carbon $since)
+    private function buildQuery(string $authKey, string $type, int $page, int $perPage, Carbon $since)
     {
         $request = [
             'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date("Y-m-d_H:i:s"),
@@ -121,7 +121,7 @@ class Asset extends AbstractModel
                             'operator' => 'and',
                             'range' => [
                                 'field' => 'modDate',
-                                'min' => $since->timestamp * 1000, // microseconds, not milliseconds
+                                'min' => $since->timestamp * 1000, // milliseconds, not seconds
                                 'max' => null,
                                 'includeMin' => true,
                                 'includeMax' => false,
@@ -135,8 +135,8 @@ class Asset extends AbstractModel
                         'order' => 'desc'
                     ],
                     'page' => [
-                        'startIndex' => ($page - 1) * 10,
-                        'size' => 10
+                        'startIndex' => ($page - 1) * $perPage,
+                        'size' => $perPage,
                     ],
                     'data' => [
                         'asset.base',
