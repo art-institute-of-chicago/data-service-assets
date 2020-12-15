@@ -15,6 +15,9 @@ class AssetTransformer extends AbstractTransformer
             'title' => $asset->title,
             'content' => $asset->external_website,
             'alt_text' => $asset->alt_text,
+            // TODO: Only show these columns for images?
+            'width' => $asset->width,
+            'height' => $asset->height,
             'is_educational_resource' => collect($asset->publish_status)->contains('Educational Resources'),
             'is_multimedia_resource' => collect($asset->publish_status)->contains('Multimedia'),
             'is_teacher_resource' => collect($asset->publish_status)->contains('Teacher Resources'),
