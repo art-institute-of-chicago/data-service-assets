@@ -20,14 +20,18 @@ class ImportAssets extends AbstractCommand
 
         foreach (Asset::$types as $type) {
             $page = 1;
-            $assets = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);
-            while ($assets->isNotEmpty()) {
-                $assets->each(function ($item, $key) {
+            $result = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);
+
+            while ($result['assets']->isNotEmpty()) {
+                $this->info('Importing page ' . $result['page'] . ' of ' . $result['pages']);
+
+                $result['assets']->each(function ($item, $key) {
+                    $this->info($item->id . ' - ' . $item ->title);
                     $item->save();
                 });
 
                 $page++;
-                $assets = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);
+                $result = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);
             }
         }
     }

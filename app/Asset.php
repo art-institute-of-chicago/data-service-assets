@@ -52,8 +52,10 @@ class Asset extends AbstractModel
         $response = $this->call($request);
         $results = $this->parseResult($response);
 
-        return $results;
+        $results['page'] = $page;
+        $results['pages'] = ceil($results['size'] / $perPage);
 
+        return $results;
     }
 
     private function parseResult($response)
@@ -71,7 +73,10 @@ class Asset extends AbstractModel
             $assets[] = $asset;
         }
 
-        return collect($assets);
+        return [
+            'size' => $response->result->size,
+            'assets' => collect($assets),
+        ];
     }
 
     public function fillFrom($source)
