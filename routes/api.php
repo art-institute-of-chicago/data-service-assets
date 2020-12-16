@@ -18,6 +18,6 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('sounds', 'AssetsController@indexScope');
     Route::get('sounds/{id}', 'AssetsController@showScope');
 
-    Route::get('images', 'AssetsController@indexScope');
-    Route::get('images/{id}', 'AssetsController@showScope');
+    Route::get('images', 'ImagesController@indexScope');
+    Route::get('images/{id}', 'ImagesController@showScope');
 });
