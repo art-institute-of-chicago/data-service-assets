@@ -40,7 +40,6 @@ class ImageDownload extends AbstractCommand
 
                 $image->image_attempted_at = null;
                 $image->image_downloaded_at = null;
-                $image->image_cache_hit = null;
                 $image->save();
 
                 Storage::delete($file);
@@ -57,13 +56,12 @@ class ImageDownload extends AbstractCommand
                 Storage::put($file, $contents);
 
                 $image->image_downloaded_at = Carbon::now();
-                $image->image_cache_hit = in_array('x-cache: hit from cloudfront', array_map('strtolower', $headers));
                 $image->save();
 
                 $this->info("{$image->id} - downloaded");
 
                 // Give the IIIF server a rest
-                if (!$image->image_cache_hit)
+                if (!in_array('x-cache: hit from cloudfront', array_map('strtolower', $headers)))
                 {
                     usleep($this->sleep * 1000000);
                 }
