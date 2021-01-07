@@ -11,6 +11,8 @@ class Asset extends AbstractModel
     use SourceCallable, Singletonable;
 
     protected $dates = [
+        'image_attempted_at',
+        'image_downloaded_at',
         'source_modified_at',
     ];
 
