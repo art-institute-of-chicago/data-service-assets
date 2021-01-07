@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Image;
+use App\Asset;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,8 +17,12 @@ class ImageDownload extends AbstractCommand
 
     public function handle()
     {
+        $images = Asset::images();
+
         // Only get images that haven't been downloaded yet
-        $images = $this->option('all') ? Image::query() : Image::whereNull('image_downloaded_at');
+        if (!$this->option('all')) {
+            $images->whereNull('image_downloaded_at');
+        }
 
         if (!$this->confirm($images->count() . ' images will be downloaded. Proceed?'))
         {
