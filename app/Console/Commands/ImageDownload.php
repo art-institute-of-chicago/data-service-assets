@@ -24,20 +24,16 @@ class ImageDownload extends AbstractCommand
             $images->whereNull('image_downloaded_at');
         }
 
-        if (!$this->confirm($images->count() . ' images will be downloaded. Proceed?'))
-        {
+        if (!$this->confirm($images->count() . ' images will be downloaded. Proceed?')) {
             return;
         }
 
-        foreach ($images->cursor(['id']) as $image)
-        {
+        foreach ($images->cursor(['id']) as $image) {
             $file = "images/{$image->id}.jpg";
             $url = config('source.iiif_url') . "/{$image->id}/full/843,/0/default.jpg";
 
-            if (Storage::exists($file))
-            {
-                if ($this->option('skip-existing'))
-                {
+            if (Storage::exists($file)) {
+                if ($this->option('skip-existing')) {
                     $this->warn("{$image->id} - already exists – skipping!");
                     continue;
                 }
@@ -54,8 +50,7 @@ class ImageDownload extends AbstractCommand
             $image->image_attempted_at = Carbon::now();
             $image->save();
 
-            try
-            {
+            try {
                 $contents = $this->fetch($url, $headers);
                 Storage::put($file, $contents);
 
@@ -65,13 +60,10 @@ class ImageDownload extends AbstractCommand
                 $this->info("{$image->id} - downloaded");
 
                 // Give the IIIF server a rest
-                if (!in_array('x-cache: hit from cloudfront', array_map('strtolower', $headers)))
-                {
+                if (!in_array('x-cache: hit from cloudfront', array_map('strtolower', $headers))) {
                     usleep($this->sleep * 1000000);
                 }
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 // TODO: Avoid catching non-HTTP exceptions?
                 $this->warn("{$image->id} - not found - {$url}");
 
