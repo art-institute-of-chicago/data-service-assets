@@ -6,10 +6,10 @@ use App\Asset;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class ImageDownload extends AbstractCommand
+class ImagesDownload extends AbstractCommand
 {
 
-    protected $signature = 'image:download {--all} {--skip-existing}';
+    protected $signature = 'images:download {--all} {--skip-existing}';
 
     protected $description = 'Downloads all images from LAKE IIIF';
 
