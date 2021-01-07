@@ -30,12 +30,13 @@ class ImageDownload extends AbstractCommand
         }
 
         foreach ($images->cursor(['id']) as $image) {
-            $file = "images/{$image->id}.jpg";
-            $url = config('source.iiif_url') . "/{$image->id}/full/843,/0/default.jpg";
+            $id = $image->netx_uuid;
+            $file = "images/{$id}.jpg";
+            $url = config('source.iiif_url') . "/{$id}/full/843,/0/default.jpg";
 
             if ($storage->exists($file)) {
                 if ($this->option('skip-existing')) {
-                    $this->warn("{$image->id} - already exists – skipping!");
+                    $this->warn("{$id} - already exists – skipping!");
                     continue;
                 }
 
@@ -45,7 +46,7 @@ class ImageDownload extends AbstractCommand
 
                 $storage->delete($file);
 
-                $this->warn("{$image->id} - already exists – removed!");
+                $this->warn("{$id} - already exists – removed!");
             }
 
             $image->image_attempted_at = Carbon::now();
@@ -58,7 +59,7 @@ class ImageDownload extends AbstractCommand
                 $image->image_downloaded_at = Carbon::now();
                 $image->save();
 
-                $this->info("{$image->id} - downloaded");
+                $this->info("{$id} - downloaded");
 
                 // Give the IIIF server a rest
                 if (!in_array('x-cache: hit from cloudfront', array_map('strtolower', $headers))) {
@@ -66,7 +67,7 @@ class ImageDownload extends AbstractCommand
                 }
             } catch (\Exception $e) {
                 // TODO: Avoid catching non-HTTP exceptions?
-                $this->warn("{$image->id} - not found - {$url}");
+                $this->warn("{$id} - not found - {$url}");
 
                 // Update the attempt date
                 $image->save();
