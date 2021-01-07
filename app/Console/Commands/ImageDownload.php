@@ -18,6 +18,7 @@ class ImageDownload extends AbstractCommand
     public function handle()
     {
         $images = Asset::images();
+        $storage = Storage::disk('images');
 
         // Only get images that haven't been downloaded yet
         if (!$this->option('all')) {
@@ -32,7 +33,7 @@ class ImageDownload extends AbstractCommand
             $file = "images/{$image->id}.jpg";
             $url = config('source.iiif_url') . "/{$image->id}/full/843,/0/default.jpg";
 
-            if (Storage::exists($file)) {
+            if ($storage->exists($file)) {
                 if ($this->option('skip-existing')) {
                     $this->warn("{$image->id} - already exists – skipping!");
                     continue;
@@ -42,7 +43,7 @@ class ImageDownload extends AbstractCommand
                 $image->image_downloaded_at = null;
                 $image->save();
 
-                Storage::delete($file);
+                $storage->delete($file);
 
                 $this->warn("{$image->id} - already exists – removed!");
             }
@@ -52,7 +53,7 @@ class ImageDownload extends AbstractCommand
 
             try {
                 $contents = $this->fetch($url, $headers);
-                Storage::put($file, $contents);
+                $storage->put($file, $contents);
 
                 $image->image_downloaded_at = Carbon::now();
                 $image->save();
