@@ -18,4 +18,6 @@ return [
     'username' => env('SOURCE_USERNAME', 'username'),
     'password' => env('SOURCE_PASSWORD', '********'),
 
+    'iiif_url' => env('IIIF_URL', 'https://www.artic.edu/iiif/2'),
+
 ];

@@ -28,7 +28,7 @@ class ImageDownload extends AbstractCommand
         foreach ($images->cursor(['id']) as $image)
         {
             $file = "images/{$image->id}.jpg";
-            $url = env('IIIF_URL') . "/{$image->id}/full/843,/0/default.jpg";
+            $url = config('source.iiif_url') . "/{$image->id}/full/843,/0/default.jpg";
 
             if (Storage::exists($file))
             {
