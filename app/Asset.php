@@ -11,6 +11,8 @@ class Asset extends AbstractModel
     use SourceCallable, Singletonable;
 
     protected $dates = [
+        'image_attempted_at',
+        'image_downloaded_at',
         'source_modified_at',
     ];
 
@@ -43,6 +45,16 @@ class Asset extends AbstractModel
     public function scopeVideos($query)
     {
         return $query->where('type','Video');
+    }
+
+    public function getNetxUuidAttribute($value)
+    {
+        $hash = (string) hash('md5', config('source.asset_prefix') . $this->id);
+        return substr($hash, 0, 8)  . '-'
+          . substr($hash, 8, 4)  . '-'
+          . substr($hash, 12, 4) . '-'
+          . substr($hash, 16, 4) . '-'
+          . substr($hash, 20);
     }
 
     public function callGetAssets(string $type, int $page, int $perPage, Carbon $since)
