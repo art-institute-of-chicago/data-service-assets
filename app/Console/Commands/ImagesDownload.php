@@ -31,7 +31,7 @@ class ImagesDownload extends AbstractCommand
 
         foreach ($images->cursor(['id']) as $image) {
             $id = $image->netx_uuid;
-            $file = "images/{$id}.jpg";
+            $file = $id . '.jpg';
             $url = config('source.iiif_url') . "/{$id}/full/843,/0/default.jpg";
 
             if ($storage->exists($file)) {
