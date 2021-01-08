@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class ImagesDownload extends AbstractCommand
 {
 
-    protected $signature = 'images:download {--all} {--skip-existing}';
+    protected $signature = 'images:download {--all} {--retry} {--skip-existing}';
 
     protected $description = 'Downloads all images from LAKE IIIF';
 
@@ -23,6 +23,10 @@ class ImagesDownload extends AbstractCommand
         // Only get images that haven't been downloaded yet
         if (!$this->option('all')) {
             $images->whereNull('image_downloaded_at');
+        }
+
+        if (!$this->option('retry')) {
+            $images->whereNull('image_attempted_at');
         }
 
         if (!$this->confirm($images->count() . ' images will be downloaded. Proceed?')) {
