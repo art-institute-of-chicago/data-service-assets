@@ -18,6 +18,7 @@ class Asset extends AbstractModel
 
     protected $casts = [
         'publish_status' => 'array',
+        'color' => 'object',
     ];
 
     public static $types = [

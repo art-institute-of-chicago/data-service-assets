@@ -10,6 +10,8 @@ class ImageTransformer extends AssetTransformer
             'width' => $asset->width,
             'height' => $asset->height,
 
+            'color' => $asset->color,
+
             'image_attempted_at' => $this->getDateValue($asset, 'image_attempted_at'),
             'image_downloaded_at' => $this->getDateValue($asset, 'image_downloaded_at'),
         ];

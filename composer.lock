@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf78b5d99fe0cbfe7ddd4e11ede1fa32",
+    "content-hash": "46b95bee906a6338ffde37d705c92987",
     "packages": [
         {
             "name": "aic/data-hub-foundation",
@@ -982,6 +982,76 @@
             "time": "2018-07-31T19:32:56+00:00"
         },
         {
+            "name": "intervention/image",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image.git",
+                "reference": "abbf18d5ab8367f96b3205ca3c89fb2fa598c69e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/abbf18d5ab8367f96b3205ca3c89fb2fa598c69e",
+                "reference": "abbf18d5ab8367f96b3205ca3c89fb2fa598c69e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.2",
+                "phpunit/phpunit": "^4.8 || ^5.7"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing.",
+                "intervention/imagecache": "Caching extension for the Intervention Image library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Intervention\\Image\\ImageServiceProvider"
+                    ],
+                    "aliases": {
+                        "Image": "Intervention\\Image\\Facades\\Image"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@olivervogel.com",
+                    "homepage": "http://olivervogel.com/"
+                }
+            ],
+            "description": "Image handling and manipulation library with support for Laravel integration",
+            "homepage": "http://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "laravel",
+                "thumbnail",
+                "watermark"
+            ],
+            "time": "2019-11-02T09:15:47+00:00"
+        },
+        {
             "name": "jakub-onderka/php-console-color",
             "version": "v0.2",
             "source": {
@@ -1480,6 +1550,64 @@
                 "rest"
             ],
             "time": "2017-03-12T01:28:43+00:00"
+        },
+        {
+            "name": "marijnvdwerf/material-palette",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marijnvdwerf/material-palette-php.git",
+                "reference": "956f5a28da0c939242e9f5c54768458d54b91053"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marijnvdwerf/material-palette-php/zipball/956f5a28da0c939242e9f5c54768458d54b91053",
+                "reference": "956f5a28da0c939242e9f5c54768458d54b91053",
+                "shasum": ""
+            },
+            "require": {
+                "intervention/image": "~2.2",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "devster/ubench": "^1.1",
+                "phpunit/phpunit": "^6.1",
+                "symfony/debug": "~2.6",
+                "symfony/var-dumper": "~2.6"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-imagick": "to use the Imagick implementation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "marijnvdwerf\\palette\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Marijn van der Werf",
+                    "email": "mail@marijnvdwerf.nl",
+                    "homepage": "http://marijnvdwerf.nl"
+                }
+            ],
+            "description": "Prominent image colour extraction for PHP",
+            "homepage": "https://github.com/marijnvdwerf/material-palette-php",
+            "keywords": [
+                "color",
+                "colour",
+                "image",
+                "material",
+                "material design",
+                "material-design",
+                "palette"
+            ],
+            "time": "2019-10-26T15:33:15+00:00"
         },
         {
             "name": "marktopper/doctrine-dbal-timestamp-type",
@@ -6301,6 +6429,5 @@
     "platform": {
         "php": "^7.1.3"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
