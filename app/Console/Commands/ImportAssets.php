@@ -22,6 +22,12 @@ class ImportAssets extends AbstractCommand
             $page = 1;
             $result = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);
 
+            if ($result['assets']->isEmpty()) {
+                $this->info('Nothing new found with type ' . $type);
+            } else {
+                $this->info('Found new items with type ' . $type);
+            }
+
             while ($result['assets']->isNotEmpty()) {
                 $this->info('Importing page ' . $result['page'] . ' of ' . $result['pages']);
 
