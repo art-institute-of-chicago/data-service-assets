@@ -13,6 +13,7 @@ class Asset extends AbstractModel
     protected $dates = [
         'image_attempted_at',
         'image_downloaded_at',
+        'image_colored_at',
         'source_modified_at',
     ];
 

@@ -9,6 +9,7 @@ use Intervention\Image\Exception\NotSupportedException;
 use marijnvdwerf\palette\Palette;
 
 use App\Asset;
+use Carbon\Carbon;
 
 class ImagesColor extends AbstractCommand
 {
@@ -22,7 +23,11 @@ class ImagesColor extends AbstractCommand
         $manager = new ImageManager(['driver' => 'imagick']);
         $storage = Storage::disk('images');
 
-        $images = Asset::images()->select('id')->whereNull('color')->whereNotNull('image_downloaded_at');
+        $images = Asset::images()
+            ->select('id')
+            ->whereNull('color')
+            ->whereNull('image_colored_at')
+            ->whereNotNull('image_downloaded_at');
 
         foreach ($images->cursor() as $image) {
 
@@ -45,6 +50,9 @@ class ImagesColor extends AbstractCommand
                 // See vendor/marijnvdwerf/material-palette/src/Palette.php:81
                 // https://github.com/marijnvdwerf/material-palette-php/issues/6
                 $this->warn("{$id} - Monotone image skipped");
+                $image->color = null;
+                $image->image_colored_at = Carbon::now();
+                $image->save();
                 continue;
             }
 
@@ -66,6 +74,9 @@ class ImagesColor extends AbstractCommand
             // This might happen if the image is black-and-white?
             if (!$swatch) {
                 $this->warn("{$id} - No swatches generated");
+                $image->color = null;
+                $image->image_colored_at = Carbon::now();
+                $image->save();
                 continue;
             }
 
@@ -87,6 +98,7 @@ class ImagesColor extends AbstractCommand
 
             // Save the generated color to database
             $image->color = $out;
+            $image->image_colored_at = Carbon::now();
             $image->save();
 
             $this->info($id . ' - ' . json_encode($out));
