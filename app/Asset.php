@@ -51,7 +51,7 @@ class Asset extends AbstractModel
 
     public function getNetxUuidAttribute($value)
     {
-        $hash = (string) hash('md5', config('source.asset_prefix') . $this->id);
+        $hash = (string) hash('md5', config('source.uuid_prefix') . $this->id);
         return substr($hash, 0, 8)  . '-'
           . substr($hash, 8, 4)  . '-'
           . substr($hash, 12, 4) . '-'

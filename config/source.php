@@ -20,5 +20,5 @@ return [
 
     'iiif_url' => env('IIIF_URL', 'https://www.artic.edu/iiif/2'),
 
-    'asset_prefix' => env('ASSET_PREFIX', ''),
+    'uuid_prefix' => env('UUID_PREFIX', ''),
 ];
