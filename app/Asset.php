@@ -2,8 +2,10 @@
 
 namespace App;
 
-use Aic\Hub\Foundation\AbstractModel;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+
+use Aic\Hub\Foundation\AbstractModel;
 
 class Asset extends AbstractModel
 {
@@ -29,6 +31,42 @@ class Asset extends AbstractModel
         'Video'
     ];
 
+    public static $imageExtensions = [
+        'jp2',
+        'jpg',
+        'jpeg',
+        'tif',
+    ];
+
+    /**
+     * Do not expect that an image actually exists at this path!
+     */
+    public static function getImagePath($id)
+    {
+        $storage = Storage::disk('images');
+        $id = self::getHashedId($id);
+
+        return $storage->path($id . '.jpg');
+    }
+
+    public static function getHashedId($id)
+    {
+        if (!is_numeric($id)) {
+            return $id;
+        }
+
+        if ($id === null) {
+            return null;
+        }
+
+        $hash = (string) hash('md5', config('source.uuid_prefix') . $id);
+        return substr($hash, 0, 8)  . '-'
+          . substr($hash, 8, 4)  . '-'
+          . substr($hash, 12, 4) . '-'
+          . substr($hash, 16, 4) . '-'
+          . substr($hash, 20);
+    }
+
     public function scopeImages($query)
     {
         return $query->where('type','Image');
@@ -51,12 +89,7 @@ class Asset extends AbstractModel
 
     public function getNetxUuidAttribute($value)
     {
-        $hash = (string) hash('md5', config('source.uuid_prefix') . $this->id);
-        return substr($hash, 0, 8)  . '-'
-          . substr($hash, 8, 4)  . '-'
-          . substr($hash, 12, 4) . '-'
-          . substr($hash, 16, 4) . '-'
-          . substr($hash, 20);
+        return self::getHashedId($this->id);
     }
 
     public function callGetAssets(string $type, int $page, int $perPage, Carbon $since)

@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Facades\Storage;
-
 use Intervention\Image\ImageManager;
 use Intervention\Image\Exception\NotSupportedException;
 use marijnvdwerf\palette\Palette;
@@ -21,7 +19,6 @@ class ImagesColor extends AbstractCommand
     public function handle()
     {
         $manager = new ImageManager(['driver' => 'imagick']);
-        $storage = Storage::disk('images');
 
         $images = Asset::images()
             ->select('id')
@@ -32,7 +29,7 @@ class ImagesColor extends AbstractCommand
         foreach ($images->cursor() as $image) {
 
             $id = $image->netx_uuid;
-            $file = $storage->path($id . '.jpg');
+            $file = Asset::getImagePath($id);
 
             if (!file_exists($file)) {
                 $this->warn("{$id} - File not found");
