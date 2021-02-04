@@ -20,7 +20,7 @@ class ImagesLqip extends AbstractCommand
             ->whereNull('image_lqiped_at')
             ->whereNotNull('image_downloaded_at');
 
-        $cmdTemplate = 'convert "%s" -resize x5 gif:- | base64';
+        $cmdTemplate = 'convert "%s" +profile "*" -resize x5 gif:- | base64';
 
         // https://stackoverflow.com/questions/46463027/base64-doesnt-have-w-option-in-mac
         exec('echo | base64 -w0 > /dev/null 2>&1', $output, $exitCode);
