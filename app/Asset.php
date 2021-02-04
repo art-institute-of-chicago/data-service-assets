@@ -16,6 +16,7 @@ class Asset extends AbstractModel
         'image_attempted_at',
         'image_downloaded_at',
         'image_colored_at',
+        'image_lqiped_at',
         'source_modified_at',
     ];
 
