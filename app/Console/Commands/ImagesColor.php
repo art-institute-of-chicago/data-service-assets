@@ -32,7 +32,7 @@ class ImagesColor extends AbstractCommand
             $file = Asset::getImagePath($id);
 
             if (!file_exists($file)) {
-                $this->warn("{$id} - File not found");
+                $this->warn("{$id} - File not found ({$file})");
                 continue;
             }
 

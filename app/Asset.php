@@ -46,7 +46,27 @@ class Asset extends AbstractModel
         $storage = Storage::disk('images');
         $id = self::getHashedId($id);
 
-        return $storage->path($id . '.jpg');
+        if (config('app.env') === 'local') {
+            return $storage->path($id . '.jpg');
+        }
+
+        $prefix = implode('/', [
+            substr($id, 0, 2),
+            substr($id, 2, 2),
+            substr($id, 4, 2),
+            substr($id, 6, 2),
+            $id,
+        ]);
+
+        foreach (self::$imageExtensions as $extension) {
+            $path = $prefix . '.' . $extension;
+
+            if ($storage->exists($path)) {
+                return $storage->path($path);
+            }
+        }
+
+        return $storage->path($prefix . '.jpg');
     }
 
     public static function getHashedId($id)
