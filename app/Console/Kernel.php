@@ -32,6 +32,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('import:assets')
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $schedule->command('images:color')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
