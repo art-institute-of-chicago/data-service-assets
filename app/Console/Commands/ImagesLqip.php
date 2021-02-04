@@ -20,6 +20,15 @@ class ImagesLqip extends AbstractCommand
             ->whereNull('image_lqiped_at')
             ->whereNotNull('image_downloaded_at');
 
+        $cmdTemplate = 'convert "%s" -resize x5 gif:- | base64';
+
+        // https://stackoverflow.com/questions/46463027/base64-doesnt-have-w-option-in-mac
+        exec('echo | base64 -w0 > /dev/null 2>&1', $output, $exitCode);
+
+        if ($exitCode === 0) {
+            $cmdTemplate .= ' --wrap 0';
+        }
+
         foreach ($images->cursor() as $image) {
 
             $id = $image->netx_uuid;
@@ -36,7 +45,7 @@ class ImagesLqip extends AbstractCommand
             }
 
             // Generate an Imagemagick command
-            $cmd = sprintf('convert "%s" -resize x5 gif:- | base64 --wrap 0', $file);
+            $cmd = sprintf($cmdTemplate, $file);
 
             // Run the command and grab its output
             $lqip = exec($cmd);
