@@ -20,7 +20,8 @@ class ImagesLqip extends AbstractCommand
             ->whereNull('image_lqiped_at')
             ->whereNotNull('image_downloaded_at');
 
-        $cmdTemplate = 'convert "%s" +profile "*" -resize x5 gif:- | base64';
+        // Use smallest level if pyramidal; remove ICC profile
+        $cmdTemplate = 'convert "%s"[$(($(identify "%s" | wc -l) - 1))] +profile "*" -resize x5 gif:- | base64';
 
         // https://stackoverflow.com/questions/46463027/base64-doesnt-have-w-option-in-mac
         exec('echo | base64 -w0 > /dev/null 2>&1', $output, $exitCode);
@@ -45,7 +46,7 @@ class ImagesLqip extends AbstractCommand
             }
 
             // Generate an Imagemagick command
-            $cmd = sprintf($cmdTemplate, $file);
+            $cmd = sprintf($cmdTemplate, $file, $file);
 
             // Run the command and grab its output
             $lqip = exec($cmd);
