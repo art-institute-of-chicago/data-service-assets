@@ -17,8 +17,11 @@ class ImagesLqip extends AbstractCommand
         $images = Asset::images()
             ->select('id', 'lqip')
             ->whereNull('lqip')
-            ->whereNull('image_lqiped_at')
-            ->whereNotNull('image_downloaded_at');
+            ->whereNull('image_lqiped_at');
+
+        if (config('app.env') === 'local') {
+            $images = $images->whereNotNull('image_downloaded_at');
+        }
 
         // Use smallest level if pyramidal; remove ICC profile
         $cmdTemplate = 'convert "%s"[$(($(identify "%s" | wc -l) - 1))] +profile "*" -resize x5 gif:- | base64';

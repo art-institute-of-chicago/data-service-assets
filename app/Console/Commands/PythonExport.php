@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Image;
-
 use League\Csv\Writer;
+use App\Asset;
 
 class PythonExport extends AbstractCommand
 {
@@ -28,8 +27,11 @@ class PythonExport extends AbstractCommand
             'colorfulness',
         ]);
 
-        // Only target images that have been downloaded
-        $images = Image::whereNotNull('image_downloaded_at');
+        $images = Asset::images();
+
+        if (config('app.env') === 'local') {
+            $images = $images->whereNotNull('image_downloaded_at');
+        }
 
         // Only target images that are missing fields provided by Python
         $images = $images->where(function($query) {
