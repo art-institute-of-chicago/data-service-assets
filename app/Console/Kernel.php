@@ -36,6 +36,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('images:color')
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $schedule->command('images:lqip')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
