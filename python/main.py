@@ -5,18 +5,17 @@ from func import *
 
 # Directory paths, for ease of use
 dir_script = os.path.dirname(os.path.realpath(__file__))
-dir_repo = os.path.join(dir_script, '..' )
-dir_storage = os.path.join(dir_repo, 'storage', 'app')
+dir_repo = os.path.join(dir_script, '..')
+dir_storage = os.path.join(dir_repo, 'storage')
 
-dir_data = dir_storage
-dir_images = os.path.join(dir_storage, 'images' )
+dir_data = os.path.join(dir_storage, 'python')
 
 csv_input = os.path.join(dir_data, 'python-input.csv')
 csv_output = os.path.join(dir_data, 'python-output.csv')
 
 # Exit early if there is an existing python-output.csv waiting to be digested by PHP
-# if os.path.isfile(csv_output):
-    # exit()
+if os.path.isfile(csv_output):
+    exit()
 
 file_input = open(csv_input, 'r', newline='\n', encoding='utf-8')
 file_output = open(csv_output, 'w+', newline='\n', encoding='utf-8')
@@ -37,13 +36,13 @@ writer.writeheader()
 
 for row in reader:
 
-    jpg = os.path.join(dir_images, row['id'] + '.jpg')
+    path_image = row['path']
 
-    if not os.path.isfile(jpg):
+    if not os.path.isfile(path_image):
         continue
 
-    ahash, phash, dhash, whash = get_image_fingerprint(jpg, row)
-    colorfulness = get_image_colorfulness(jpg, row)
+    ahash, phash, dhash, whash = get_image_fingerprint(path_image, row)
+    colorfulness = get_image_colorfulness(path_image, row)
 
     out = {
     	'id': row['id'],
@@ -60,3 +59,6 @@ for row in reader:
 
 file_input.close()
 file_output.close()
+
+if os.path.exists(csv_output):
+    os.remove(csv_output)

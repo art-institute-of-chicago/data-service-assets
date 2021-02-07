@@ -57,13 +57,13 @@ As such, please ensure these commands are called _after_ any other `.bashrc` lin
 
 Ensure the changes take effect. I recommend not running `source ~/.bashrc` in this case, since there's a chance that the pyenv install process has temporarily polluted your `$PATH`. Just open a new terminal window instead to start from a clean slate.
 
-Install and activate Python 3.7 using pyenv:
+Install and activate Python 3.6.8 using pyenv:
 
 ```bash
 pyenv global # should be `system`
-pyenv install 3.7
-pyenv versions # should list `3.7`
-pyenv global 3.7
+pyenv install 3.6.8
+pyenv versions # should list `3.6.8`
+pyenv global 3.6.8
 which python # should be e.g. /Users/foobar/.pyenv/shims/python
 ```
 
@@ -79,7 +79,7 @@ Create and activate a virtual environment for the project:
 
 ```bash
 cd ~/path/to/data-service-images
-pyenv versions # should be 3.7 from .python-version
+pyenv versions # should be 3.6.8 from .python-version
 virtualenv env
 source env/bin/activate # macOS
 source env/Scripts/activate # Windows w/ git-bash
@@ -90,7 +90,7 @@ You will need to run `source env/bin/activate` each time you work with this proj
 Finally, install the project's package requirements:
 
 ```bash
-pip -r requirements.txt
+pip install -r requirements.lock
 ```
 
 You should be ready to use the tool.

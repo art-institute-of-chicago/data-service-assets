@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Image;
-
+use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
+use App\Asset;
 
 class PythonImport extends AbstractCommand
 {
@@ -15,16 +15,15 @@ class PythonImport extends AbstractCommand
 
     public function handle()
     {
-        $path = storage_path() . '/app/python-output.csv';
+        $path = Storage::disk('python')->path('python-output.csv');
 
         $csv = Reader::createFromPath($path, 'r');
         $csv->setHeaderOffset(0);
 
-        foreach ($csv->getRecords() as $row)
-        {
-            $image = Image::find($row['id']);
+        foreach ($csv->getRecords() as $row) {
+            $image = Asset::images()->find($row['id']);
 
-            if( !$image ) {
+            if (!$image) {
                 $this->info("{$row['id']} - not found");
                 continue;
             }
@@ -41,6 +40,8 @@ class PythonImport extends AbstractCommand
             // Output for reference
             $this->info("{$image->id} - updated");
         }
+
+        Storage::disk('python')->delete('python-output.csv');
     }
 
 }
