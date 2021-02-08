@@ -1,7 +1,7 @@
 # requirements.txt should contain only top-level requirements
 # Update it manually: http://www.jfabre.com/how-not-to-to-pip-requirements/
 # requirements.lock should be generated with pip freeze
-Pillow==5.2.0
+Pillow==8.1.0
 ImageHash==4.0
 numpy==1.16.0
 opencv-python==4.0.0.21

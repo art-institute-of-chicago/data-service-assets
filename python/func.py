@@ -23,6 +23,11 @@ def get_image_fingerprint(file, row):
 
     pil_img = Image.open(file)
 
+    # https://github.com/python-pillow/Pillow/pull/3227
+    # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#reading-multi-frame-tiff-images
+    if getattr(pil_img, 'is_animated', False):
+        pil_img.seek(pil_img.n_frames - 1)
+
     # OSError: image file is truncated (0 bytes not processed)
     try:
         pil_img.load()
