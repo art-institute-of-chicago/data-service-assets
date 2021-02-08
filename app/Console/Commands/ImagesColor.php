@@ -23,8 +23,11 @@ class ImagesColor extends AbstractCommand
         $images = Asset::images()
             ->select('id')
             ->whereNull('color')
-            ->whereNull('image_colored_at')
-            ->whereNotNull('image_downloaded_at');
+            ->whereNull('image_colored_at');
+
+        if (config('app.env') === 'local') {
+            $images = $images->whereNotNull('image_downloaded_at');
+        }
 
         foreach ($images->cursor() as $image) {
 
