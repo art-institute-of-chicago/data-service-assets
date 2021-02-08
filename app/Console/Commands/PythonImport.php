@@ -15,6 +15,16 @@ class PythonImport extends AbstractCommand
 
     public function handle()
     {
+        if (Storage::disk('python')->exists('python-input.csv')) {
+            $this->warn('python-input.csv is still being processed');
+            exit;
+        }
+
+        if (!Storage::disk('python')->exists('python-output.csv')) {
+            $this->warn('python-output.csv not found');
+            exit;
+        }
+
         $path = Storage::disk('python')->path('python-output.csv');
 
         $csv = Reader::createFromPath($path, 'r');

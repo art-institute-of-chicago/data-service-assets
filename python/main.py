@@ -10,8 +10,14 @@ dir_storage = os.path.join(dir_repo, 'storage')
 
 dir_data = os.path.join(dir_storage, 'python')
 
+file_lock = os.path.join(dir_data, 'export.lock')
+
 csv_input = os.path.join(dir_data, 'python-input.csv')
 csv_output = os.path.join(dir_data, 'python-output.csv')
+
+# Exit early if PHP is still exporting stuff
+if os.path.isfile(file_lock):
+    exit()
 
 # Exit early if there is an existing python-output.csv waiting to be digested by PHP
 if os.path.isfile(csv_output):

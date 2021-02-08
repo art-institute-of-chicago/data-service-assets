@@ -15,11 +15,17 @@ class PythonExport extends AbstractCommand
 
     public function handle()
     {
-        // For 140K images, this command takes about 25 seconds to run
         if (Storage::disk('python')->exists('python-input.csv')) {
             $this->warn('python-input.csv already exists');
             exit;
         }
+
+        if (Storage::disk('python')->exists('python-output.csv')) {
+            $this->warn('python-output.csv has not been processed yet');
+            exit;
+        }
+
+        Storage::disk('python')->put('export.lock', '');
 
         $path = Storage::disk('python')->path('python-input.csv');
         $csv = Writer::createFromPath($path, 'w');
@@ -66,6 +72,8 @@ class PythonExport extends AbstractCommand
 
             $this->info(json_encode($row));
         }
+
+        Storage::disk('python')->delete('export.lock');
     }
 
 }

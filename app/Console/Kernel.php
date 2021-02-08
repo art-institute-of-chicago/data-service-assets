@@ -40,6 +40,14 @@ class Kernel extends ConsoleKernel
         $schedule->command('images:lqip')
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $schedule->command('python:export')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $schedule->command('python:import')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
