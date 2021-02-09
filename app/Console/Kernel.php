@@ -42,11 +42,11 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping(self::FOR_ONE_YEAR);
 
         $schedule->command('python:export')
-            ->everyFiveMinutes()
+            ->everyMinute()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
 
         $schedule->command('python:import')
-            ->everyFiveMinutes()
+            ->everyMinute()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
