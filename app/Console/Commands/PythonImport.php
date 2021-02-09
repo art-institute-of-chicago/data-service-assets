@@ -39,11 +39,25 @@ class PythonImport extends AbstractCommand
             }
 
             // https://github.com/JohannesBuchner/imagehash
-            !empty($row['ahash']) && $image->ahash = $row['ahash'];
-            !empty($row['dhash']) && $image->dhash = $row['dhash'];
-            !empty($row['phash']) && $image->phash = $row['phash'];
-            !empty($row['whash']) && $image->whash = $row['whash'];
-            !empty($row['colorfulness']) && $image->colorfulness = $row['colorfulness'];
+            if (!empty($row['ahash'])) {
+                $image->ahash = $row['ahash'];
+            }
+
+            if (!empty($row['dhash'])) {
+                $image->dhash = $row['dhash'];
+            }
+
+            if (!empty($row['phash'])) {
+                $image->phash = $row['phash'];
+            }
+
+            if (!empty($row['whash'])) {
+                $image->whash = $row['whash'];
+            }
+
+            if (!empty($row['colorfulness'])) {
+                $image->colorfulness = $row['colorfulness'];
+            }
 
             $image->save();
 
