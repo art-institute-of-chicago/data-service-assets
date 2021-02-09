@@ -57,6 +57,9 @@ class PythonExport extends AbstractCommand
 
         $this->warn($images->count() . ' images will be exported');
 
+        // Add limit for troubleshooting
+        $images = $images->limit(100);
+
         foreach ($images->cursor() as $image) {
             $row = [
                 'id' => $image->id,
