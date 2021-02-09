@@ -40,31 +40,33 @@ writer = csv.DictWriter(file_output, fieldnames=keys)
 
 writer.writeheader()
 
-for row in reader:
+try:
+    for row in reader:
 
-    path_image = row['path']
+        path_image = row['path']
 
-    if not os.path.isfile(path_image):
-        continue
+        if not os.path.isfile(path_image):
+            continue
 
-    ahash, phash, dhash, whash = get_image_fingerprint(path_image, row)
-    colorfulness = get_image_colorfulness(path_image, row)
+        ahash, phash, dhash, whash = get_image_fingerprint(path_image, row)
+        colorfulness = get_image_colorfulness(path_image, row)
 
-    out = {
-    	'id': row['id'],
-    	'ahash': ahash,
-    	'phash': phash,
-    	'dhash': dhash,
-    	'whash': whash,
-        'colorfulness': colorfulness,
-    }
+        out = {
+            'id': row['id'],
+            'ahash': ahash,
+            'phash': phash,
+            'dhash': dhash,
+            'whash': whash,
+            'colorfulness': colorfulness,
+        }
 
-    # Output to CSV and console
-    writer.writerow(out)
-    print(out)
+        # Output to CSV and console
+        writer.writerow(out)
+        print(out)
 
-file_input.close()
-file_output.close()
+finally:
+    file_input.close()
+    file_output.close()
 
-if os.path.exists(csv_input):
-    os.remove(csv_input)
+    if os.path.exists(csv_input):
+        os.remove(csv_input)
