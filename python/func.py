@@ -1,6 +1,6 @@
 import imagehash
 
-from PIL import Image
+import PIL
 import numpy as np
 import imutils
 import cv2
@@ -21,7 +21,10 @@ def get_image_fingerprint(file, row):
     if not do_ahash and not do_phash and not do_dhash and not do_whash:
         return None, None, None, None
 
-    pil_img = Image.open(file)
+    try:
+        pil_img = PIL.Image.open(file)
+    except (PIL.UnidentifiedImageError):
+        return None, None, None, None
 
     # https://github.com/python-pillow/Pillow/pull/3227
     # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#reading-multi-frame-tiff-images
