@@ -57,6 +57,10 @@ class PythonExport extends AbstractCommand
 
         $this->warn($images->count() . ' images will be exported');
 
+        if (config('source.python_chunk_size')) {
+            $images = $images->limit(config('source.python_chunk_size'));
+        }
+
         foreach ($images->cursor() as $image) {
             $row = [
                 'id' => $image->id,
