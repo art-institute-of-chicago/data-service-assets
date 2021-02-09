@@ -17,12 +17,12 @@ class PythonExport extends AbstractCommand
     {
         if (Storage::disk('python')->exists('python-input.csv')) {
             $this->warn('python-input.csv already exists');
-            exit;
+            return;
         }
 
         if (Storage::disk('python')->exists('python-output.csv')) {
             $this->warn('python-output.csv has not been processed yet');
-            exit;
+            return;
         }
 
         Storage::disk('python')->put('export.lock', '');

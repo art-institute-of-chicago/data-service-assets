@@ -17,12 +17,12 @@ class PythonImport extends AbstractCommand
     {
         if (Storage::disk('python')->exists('python-input.csv')) {
             $this->warn('python-input.csv is still being processed');
-            exit;
+            return;
         }
 
         if (!Storage::disk('python')->exists('python-output.csv')) {
             $this->warn('python-output.csv not found');
-            exit;
+            return;
         }
 
         $path = Storage::disk('python')->path('python-output.csv');

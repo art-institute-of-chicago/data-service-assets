@@ -19,7 +19,7 @@ class ImagesDownload extends AbstractCommand
     {
         if (config('app.env') !== 'local') {
             $this->warn('This command is meant for development environments');
-            exit;
+            return;
         }
 
         $images = Asset::images();
