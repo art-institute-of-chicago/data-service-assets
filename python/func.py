@@ -53,6 +53,10 @@ def get_image_colorfulness(file, row):
         return None
 
     cv_img = cv2.imread(file)
+
+    if cv_img is None:
+        return None
+
     cv_img = imutils.resize(cv_img, width=250)
 
     # split the image into its respective RGB components
