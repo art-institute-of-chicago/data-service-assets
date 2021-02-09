@@ -23,7 +23,7 @@ def get_image_fingerprint(file, row):
 
     try:
         pil_img = PIL.Image.open(file)
-    except (PIL.UnidentifiedImageError):
+    except (PIL.UnidentifiedImageError, PIL.Image.DecompressionBombError):
         return None, None, None, None
 
     # https://github.com/python-pillow/Pillow/pull/3227
