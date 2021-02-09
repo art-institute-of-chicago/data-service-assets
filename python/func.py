@@ -4,11 +4,39 @@ import PIL
 import numpy as np
 import imutils
 import cv2
+import scipy.misc.pilutil
 
 # Helper to parse CSV cells into booleans
 # https://stackoverflow.com/questions/31842424/boolean-value-of-fields-in-csv-file-in-python
 def get_bool(value):
     return True if value == '1' else False
+
+# Helper to load images, optimized for pyramidal TIFFs
+def get_pil_image(file, min_width=None):
+    try:
+        pil_img = PIL.Image.open(file)
+    except (PIL.UnidentifiedImageError, PIL.Image.DecompressionBombError):
+        return None
+
+    # https://github.com/python-pillow/Pillow/pull/3227
+    # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#reading-multi-frame-tiff-images
+    if getattr(pil_img, 'is_animated', False):
+        if min_width is None:
+            pil_img.seek(pil_img.n_frames - 1)
+        else:
+            for frame in range(pil_img.n_frames - 1, 0, -1):
+                pil_img.seek(frame)
+                if (pil_img.width > min_width):
+                    break
+
+    # OSError: image file is truncated (0 bytes not processed)
+    try:
+        pil_img.load()
+    except (IOError, OSError):
+        pil_img.close()
+        return None
+
+    return pil_img
 
 # https://realpython.com/blog/python/fingerprinting-images-for-near-duplicate-detection/
 # https://github.com/JohannesBuchner/imagehash
@@ -21,21 +49,9 @@ def get_image_fingerprint(file, row):
     if not do_ahash and not do_phash and not do_dhash and not do_whash:
         return None, None, None, None
 
-    try:
-        pil_img = PIL.Image.open(file)
-    except (PIL.UnidentifiedImageError, PIL.Image.DecompressionBombError):
-        return None, None, None, None
+    pil_img = get_pil_image(file)
 
-    # https://github.com/python-pillow/Pillow/pull/3227
-    # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#reading-multi-frame-tiff-images
-    if getattr(pil_img, 'is_animated', False):
-        pil_img.seek(pil_img.n_frames - 1)
-
-    # OSError: image file is truncated (0 bytes not processed)
-    try:
-        pil_img.load()
-    except (IOError, OSError):
-        pil_img.close()
+    if pil_img is None:
         return None, None, None, None
 
     ahash = str(imagehash.average_hash(pil_img)) if do_ahash else None
@@ -52,12 +68,20 @@ def get_image_colorfulness(file, row):
     if not get_bool(row['colorfulness']):
         return None
 
-    cv_img = cv2.imread(file)
+    pil_img = get_pil_image(file, min_width=250)
+
+    if pil_img is None:
+        return None
+
+    cv_img = scipy.misc.fromimage(pil_img)
+
+    pil_img.close()
 
     if cv_img is None:
         return None
 
-    cv_img = imutils.resize(cv_img, width=250)
+    if pil_img.width > 500:
+        cv_img = imutils.resize(cv_img, width=250)
 
     # split the image into its respective RGB components
     (B, G, R) = cv2.split(cv_img.astype('float'))
