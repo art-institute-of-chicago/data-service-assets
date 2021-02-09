@@ -15,11 +15,15 @@ file_lock = os.path.join(dir_data, 'export.lock')
 csv_input = os.path.join(dir_data, 'python-input.csv')
 csv_output = os.path.join(dir_data, 'python-output.csv')
 
-# Exit early if PHP is still exporting stuff
+# Exit if PHP is still exporting stuff
 if os.path.isfile(file_lock):
     exit()
 
-# Exit early if there is an existing python-output.csv waiting to be digested by PHP
+# Exit if there's nothing to process yet
+if not os.path.isfile(csv_input):
+    exit()
+
+# Exit if there is an existing python-output.csv waiting to be digested by PHP
 if os.path.isfile(csv_output):
     exit()
 
