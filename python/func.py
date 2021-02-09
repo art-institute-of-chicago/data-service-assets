@@ -84,7 +84,11 @@ def get_image_colorfulness(file, row):
         cv_img = imutils.resize(cv_img, width=250)
 
     # split the image into its respective RGB components
-    (B, G, R) = cv2.split(cv_img.astype('float'))
+    # ValueError: too many values to unpack (expected 3)
+    try:
+        (B, G, R) = cv2.split(cv_img.astype('float'))
+    except ValueError:
+        return None
 
     # compute rg = R - G
     rg = np.absolute(R - G)
