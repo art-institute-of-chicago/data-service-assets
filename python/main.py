@@ -66,5 +66,5 @@ for row in reader:
 file_input.close()
 file_output.close()
 
-if os.path.exists(csv_output):
-    os.remove(csv_output)
+if os.path.exists(csv_input):
+    os.remove(csv_input)
