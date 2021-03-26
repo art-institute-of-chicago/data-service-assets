@@ -47,7 +47,7 @@ class PythonExport extends AbstractCommand
         }
 
         // Only target images that are missing fields provided by Python
-        $images = $images->where(function($query) {
+        $images = $images->where(function ($query) {
             $query->whereNull('ahash')
                 ->orWhereNull('dhash')
                 ->orWhereNull('phash')

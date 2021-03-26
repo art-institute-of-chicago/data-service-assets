@@ -32,7 +32,7 @@ class Asset extends AbstractModel
         'Image',
         'Document',
         'Audio',
-        'Video'
+        'Video',
     ];
 
     public static $imageExtensions = [
@@ -84,8 +84,9 @@ class Asset extends AbstractModel
         }
 
         $hash = (string) hash('md5', config('source.uuid_prefix') . $id);
-        return substr($hash, 0, 8)  . '-'
-          . substr($hash, 8, 4)  . '-'
+
+        return substr($hash, 0, 8) . '-'
+          . substr($hash, 8, 4) . '-'
           . substr($hash, 12, 4) . '-'
           . substr($hash, 16, 4) . '-'
           . substr($hash, 20);
@@ -93,22 +94,22 @@ class Asset extends AbstractModel
 
     public function scopeImages($query)
     {
-        return $query->where('type','Image');
+        return $query->where('type', 'Image');
     }
 
     public function scopeTexts($query)
     {
-        return $query->where('type','Document');
+        return $query->where('type', 'Document');
     }
 
     public function scopeSounds($query)
     {
-        return $query->where('type','Audio');
+        return $query->where('type', 'Audio');
     }
 
     public function scopeVideos($query)
     {
-        return $query->where('type','Video');
+        return $query->where('type', 'Video');
     }
 
     public function getNetxUuidAttribute($value)
@@ -134,6 +135,7 @@ class Asset extends AbstractModel
         if (!$response) {
             return [];
         }
+
         $response = json_decode($response);
 
         $assets = [];
@@ -150,7 +152,7 @@ class Asset extends AbstractModel
         ];
     }
 
-    public function fillFrom($source)
+    private function fillFrom($source)
     {
         $this->id = $source->id;
         $this->title = $source->name;
@@ -162,20 +164,22 @@ class Asset extends AbstractModel
         $this->alt_text = $this->head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
         $this->copyright_notice = $this->head($source->attributes->{'Copyright notice'});
-        $this->source_modified_at = isset($source->modDate) ? Carbon::createFromTimestamp($source->modDate/1000) : null;
+        $this->source_modified_at = isset($source->modDate) ? Carbon::createFromTimestamp($source->modDate / 1000) : null;
     }
 
-    private function head($array = []) {
+    private function head($array = [])
+    {
         if (empty($array)) {
             return null;
         }
+
         return head($array);
     }
 
     private function buildQuery(string $authKey, string $type, int $page, int $perPage, Carbon $since)
     {
         $request = [
-            'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date("Y-m-d_H:i:s"),
+            'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date('Y-m-d_H:i:s'),
             'method' => 'getAssetsByQuery',
             'params' => [
                 $authKey,
@@ -185,15 +189,15 @@ class Asset extends AbstractModel
                             'operator' => 'and',
                             'exact' => [
                                 'attribute' => 'Publish status',
-                                'value' => 'Web'
-                            ]
+                                'value' => 'Web',
+                            ],
                         ],
                         [
                             'operator' => 'and',
                             'exact' => [
                                 'attribute' => 'assetType_pub',
-                                'value' => $type
-                            ]
+                                'value' => $type,
+                            ],
                         ],
                         [
                             'operator' => 'and',
@@ -203,14 +207,14 @@ class Asset extends AbstractModel
                                 'max' => null,
                                 'includeMin' => true,
                                 'includeMax' => false,
-                            ]
+                            ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'sort' => [
                         'field' => 'modDate',
-                        'order' => 'desc'
+                        'order' => 'desc',
                     ],
                     'page' => [
                         'startIndex' => ($page - 1) * $perPage,
@@ -221,12 +225,12 @@ class Asset extends AbstractModel
                         'asset.attributes',
                         // TODO: Do we need this? Opportunity to make response lighter?
                         // 'asset.folders',
-                        'asset.file'
-                    ]
-                ]
+                        'asset.file',
+                    ],
+                ],
             ],
             'dataContext' => 'json',
-            'jsonrpc' => '2.0'
+            'jsonrpc' => '2.0',
         ];
 
         return json_encode($request);

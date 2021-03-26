@@ -67,7 +67,7 @@ class ImagesColor extends AbstractCommand
             ]);
 
             // Select the first swatch that (1) isn't empty, and (2) isn't derived
-            $swatch = $swatches->first(function($swatch) {
+            $swatch = $swatches->first(function ($swatch) {
                 return !is_null($swatch) && $swatch->getPopulation() > 0;
             });
 

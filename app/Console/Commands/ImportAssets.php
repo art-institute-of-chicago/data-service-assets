@@ -10,7 +10,7 @@ class ImportAssets extends AbstractCommand
     protected $signature = 'import:assets
                             {--since= : How far back to scan for records}';
 
-    protected $description = "Import metadata about assets that changed since the last import";
+    protected $description = 'Import metadata about assets that changed since the last import';
 
     private $perPage = 10;
 
@@ -32,7 +32,7 @@ class ImportAssets extends AbstractCommand
                 $this->info('Importing page ' . $result['page'] . ' of ' . $result['pages']);
 
                 $result['assets']->each(function ($item, $key) {
-                    $this->info($item->id . ' - ' . $item ->title);
+                    $this->info($item->id . ' - ' . $item->title);
                     $item->save();
                 });
 

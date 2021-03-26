@@ -74,5 +74,3 @@ abstract class AbstractCommand extends BaseCommand
         return $result;
     }
 }
-
-
