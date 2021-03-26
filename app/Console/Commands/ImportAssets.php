@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Asset;
+use App\Models\Asset;
 
 class ImportAssets extends AbstractCommand
 {

@@ -1,16 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+
+use App\Models\Behaviors\Singletonable;
+use App\Models\Behaviors\SourceCallable;
 
 use Aic\Hub\Foundation\AbstractModel;
 
 class Asset extends AbstractModel
 {
 
-    use SourceCallable, Singletonable;
+    use Singletonable, SourceCallable;
 
     protected $dates = [
         'image_attempted_at',

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Command;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,9 +13,9 @@ use Aic\Hub\Foundation\AbstractCommand as BaseCommand;
 abstract class AbstractCommand extends BaseCommand
 {
     /**
-     * An instance of the \App\Command model for logging.
+     * An instance of the \App\Models\Command model for logging.
      *
-     * @var \App\Command
+     * @var \App\Models\Command
      */
     protected $command;
 
@@ -45,7 +46,7 @@ abstract class AbstractCommand extends BaseCommand
         $name = Str::endsWith($name, '-full') ? substr($name, 0, -5) : $name;
 
         // TODO: Track import success on a per-resource basis, rather than per-command?
-        $this->command = \App\Command::firstOrNew(['command' => $name]);
+        $this->command = Command::firstOrNew(['command' => $name]);
         $this->command->last_attempt_at = Carbon::now();
         $this->command->save();
 

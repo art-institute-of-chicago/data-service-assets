@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Asset;
+use App\Models\Asset;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 

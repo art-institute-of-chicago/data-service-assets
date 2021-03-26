@@ -6,7 +6,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Exception\NotSupportedException;
 use marijnvdwerf\palette\Palette;
 
-use App\Asset;
+use App\Models\Asset;
 use Carbon\Carbon;
 
 class ImagesColor extends AbstractCommand

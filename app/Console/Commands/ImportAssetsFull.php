@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Command;
+use App\Models\Command;
 
 class ImportAssetsFull extends ImportAssets
 {

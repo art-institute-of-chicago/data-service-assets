@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
-use App\Asset;
+use App\Models\Asset;
 
 class PythonImport extends AbstractCommand
 {

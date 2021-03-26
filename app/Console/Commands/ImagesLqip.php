@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use App\Asset;
+use App\Models\Asset;
 
 class ImagesLqip extends AbstractCommand
 {

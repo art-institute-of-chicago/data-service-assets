@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Writer;
-use App\Asset;
+use App\Models\Asset;
 
 class PythonExport extends AbstractCommand
 {
