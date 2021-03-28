@@ -47,9 +47,26 @@ class Asset extends AbstractModel
     {
         parent::boot();
 
+        self::updated(function ($model) {
+            $oldChecksum = $model->getOriginal('checksum');
+            $newChecksum = $model->getAttribute('checksum');
+
+            if ($oldChecksum !== $newChecksum) {
+                self::createInvalidation($model->id);
+            }
+        });
+
         self::deleted(function ($model) {
+            self::createInvalidation($model->id);
             self::createDeletion($model->id);
         });
+    }
+
+    public static function createInvalidation($id)
+    {
+        Invalidation::create([
+            'asset_id' => $id,
+        ]);
     }
 
     public static function createDeletion($id)
