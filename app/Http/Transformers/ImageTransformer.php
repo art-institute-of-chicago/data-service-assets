@@ -26,16 +26,4 @@ class ImageTransformer extends AssetTransformer
             'image_downloaded_at' => $this->getDateValue($asset, 'image_downloaded_at'),
         ];
     }
-
-    private function getDateValue($image, $fieldName)
-    {
-        if (!isset($image->{$fieldName})) {
-            return null;
-        }
-
-        $date = $image->{$fieldName};
-        $date->setTimezone('America/Chicago');
-
-        return $date->toIso8601String();
-    }
 }

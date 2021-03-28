@@ -23,9 +23,9 @@ class AssetTransformer extends AbstractTransformer
         $typeFields = $this->transformAsset($asset);
 
         $dateFields = [
-            'source_modified_at' => $asset->source_modified_at->toIso8601String(),
-            'created_at' => $asset->created_at->toIso8601String(),
-            'modified_at' => $asset->updated_at->toIso8601String(),
+            'source_modified_at' => $this->getDateValue($asset, 'source_modified_at'),
+            'created_at' => $this->getDateValue($asset, 'created_at'),
+            'modified_at' => $this->getDateValue($asset, 'updated_at'),
         ];
 
         $data = array_merge($sharedFields, $typeFields, $dateFields);
@@ -42,4 +42,15 @@ class AssetTransformer extends AbstractTransformer
         return [];
     }
 
+    protected function getDateValue($asset, $fieldName)
+    {
+        if (!isset($asset->{$fieldName})) {
+            return null;
+        }
+
+        $date = $asset->{$fieldName};
+        $date->setTimezone('America/Chicago');
+
+        return $date->toIso8601String();
+    }
 }
