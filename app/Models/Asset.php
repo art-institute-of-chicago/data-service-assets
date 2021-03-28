@@ -42,6 +42,22 @@ class Asset extends AbstractModel
         'tif',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function ($model) {
+            self::createDeletion($model->id);
+        });
+    }
+
+    public static function createDeletion($id)
+    {
+        Deletion::create([
+            'asset_id' => $id,
+        ]);
+    }
+
     /**
      * Do not expect that an image actually exists at this path!
      */
