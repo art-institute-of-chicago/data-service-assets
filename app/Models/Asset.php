@@ -220,6 +220,13 @@ class Asset extends AbstractModel
                             ],
                         ],
                         [
+                            'operator' => 'not',
+                            'exact' => [
+                                'attribute' => 'Document type',
+                                'value' => 'Expired',
+                            ],
+                        ],
+                        [
                             'operator' => 'and',
                             'range' => [
                                 'field' => 'modDate',
