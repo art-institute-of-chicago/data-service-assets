@@ -7,13 +7,14 @@ use Carbon\Carbon;
 
 use App\Models\Behaviors\Singletonable;
 use App\Models\Behaviors\SourceCallable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Aic\Hub\Foundation\AbstractModel;
 
 class Asset extends AbstractModel
 {
 
-    use Singletonable, SourceCallable;
+    use Singletonable, SourceCallable, SoftDeletes;
 
     protected $dates = [
         'image_attempted_at',
@@ -157,7 +158,10 @@ class Asset extends AbstractModel
         $assets = [];
 
         foreach ($response->result->results as $res) {
-            $asset = Asset::findOrNew($res->id);
+            $asset = Asset::withTrashed()->findOrNew($res->id);
+            if ($asset->trashed()) {
+                $asset->restore();
+            }
             $asset->fillFrom($res);
             $assets[] = $asset;
         }
