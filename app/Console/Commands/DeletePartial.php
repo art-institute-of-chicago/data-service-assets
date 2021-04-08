@@ -16,9 +16,12 @@ class DeletePartial extends AbstractCommand
 
     public function handle()
     {
+        // Upstream API has trouble with timezone offsets
         $url = config('source.shim_api_url') . '/assets/unpublished_assets?' . http_build_query([
-            'since' => $this->since->toIso8601String(),
+            'since' => (clone $this->since)->setTimezone('UTC')->toDateTimeLocalString(),
         ]);
+
+        $this->info('Querying ' . $url);
 
         $results = json_decode($this->fetch($url));
 
