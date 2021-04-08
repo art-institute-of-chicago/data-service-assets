@@ -6,6 +6,8 @@ return [
     'username' => env('SOURCE_USERNAME'),
     'password' => env('SOURCE_PASSWORD'),
 
+    'shim_api_url' => env('SHIM_API_URL'),
+
     'iiif_url' => env('IIIF_URL', 'https://www.artic.edu/iiif/2'),
 
     'uuid_prefix' => env('UUID_PREFIX'),
