@@ -6,13 +6,13 @@ use App\Console\Commands\Concerns\HasSince;
 use App\Models\Asset;
 use Carbon\Carbon;
 
-class ImportDeletions extends AbstractCommand
+class DeletePartial extends AbstractCommand
 {
     use HasSince;
 
-    protected $signature = 'import:deletions';
+    protected $signature = 'delete:partial';
 
-    protected $description = 'Import metadata about assets that changed since the last import';
+    protected $description = 'Import delete entries published by the content shim';
 
     public function handle()
     {
