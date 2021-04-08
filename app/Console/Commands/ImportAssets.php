@@ -17,8 +17,6 @@ class ImportAssets extends AbstractCommand
 
     public function handle()
     {
-        $this->info('Looking for resources since ' . $this->since->toIso8601String());
-
         foreach (Asset::$types as $type) {
             $page = 1;
             $result = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);

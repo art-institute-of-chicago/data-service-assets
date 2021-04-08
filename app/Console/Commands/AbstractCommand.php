@@ -76,6 +76,10 @@ abstract class AbstractCommand extends BaseCommand
             $this->since = Command::never();
         }
 
+        if ($this->hasOption('since') || $this->hasOption('full')) {
+            $this->info('Looking for resources since ' . $this->since->toIso8601String());
+        }
+
         // Call Illuminate\Console\Command::execute
         $result = parent::execute($input, $output);
 
