@@ -26,6 +26,17 @@ abstract class AbstractCommand extends BaseCommand
      */
     protected $since;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        foreach (class_uses_recursive($this) as $trait) {
+            if (method_exists($this, $method = 'init' . class_basename($trait))) {
+                $this->{$method}();
+            }
+        }
+    }
+
     /**
      * Here, we've extended the inherited execute method, which allows us to log times
      * for each command call. You can use `handle` in child classes as normal.

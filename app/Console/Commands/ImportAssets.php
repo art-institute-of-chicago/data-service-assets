@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Concerns\HasSince;
 use App\Models\Asset;
 
 class ImportAssets extends AbstractCommand
 {
+    use HasSince;
 
-    protected $signature = 'import:assets
-                            {--since= : How far back to scan for records}
-                            {--full : Import records since the beginning of time }';
+    protected $signature = 'import:assets';
 
     protected $description = 'Import metadata about assets that changed since the last import';
 
