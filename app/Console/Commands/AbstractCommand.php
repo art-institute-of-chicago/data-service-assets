@@ -61,6 +61,10 @@ abstract class AbstractCommand extends BaseCommand
             }
         }
 
+        if ($this->hasOption('full') && $this->option('full')) {
+            $this->since = Command::never();
+        }
+
         // Call Illuminate\Console\Command::execute
         $result = parent::execute($input, $output);
 

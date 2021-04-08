@@ -8,7 +8,8 @@ class ImportAssets extends AbstractCommand
 {
 
     protected $signature = 'import:assets
-                            {--since= : How far back to scan for records}';
+                            {--since= : How far back to scan for records}
+                            {--full : Import records since the beginning of time }';
 
     protected $description = 'Import metadata about assets that changed since the last import';
 
