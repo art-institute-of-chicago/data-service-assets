@@ -47,6 +47,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('python:import')
             ->everyMinute()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $schedule->command('invalidate')
+            ->everyMinute()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
