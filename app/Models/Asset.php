@@ -7,13 +7,14 @@ use Carbon\Carbon;
 
 use App\Models\Behaviors\Singletonable;
 use App\Models\Behaviors\SourceCallable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Aic\Hub\Foundation\AbstractModel;
 
 class Asset extends AbstractModel
 {
 
-    use Singletonable, SourceCallable;
+    use Singletonable, SourceCallable, SoftDeletes;
 
     protected $dates = [
         'image_attempted_at',
@@ -41,6 +42,22 @@ class Asset extends AbstractModel
         'jpeg',
         'tif',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function ($model) {
+            self::createDeletion($model->id);
+        });
+    }
+
+    public static function createDeletion($id)
+    {
+        Deletion::create([
+            'asset_id' => $id,
+        ]);
+    }
 
     /**
      * Do not expect that an image actually exists at this path!
@@ -117,11 +134,20 @@ class Asset extends AbstractModel
         return self::getHashedId($this->id);
     }
 
+    public function callCheckPublished(string $type, array $ids)
+    {
+        $authKey = $this->authenticate();
+        $request = $this->buildExistsQuery($authKey, $type, $ids);
+        $response = $this->call(json_encode($request));
+
+        return json_decode($response);
+    }
+
     public function callGetAssets(string $type, int $page, int $perPage, Carbon $since)
     {
         $authKey = $this->authenticate();
-        $request = $this->buildQuery($authKey, $type, $page, $perPage, $since);
-        $response = $this->call($request);
+        $request = $this->buildGetQuery($authKey, $type, $page, $perPage, $since);
+        $response = $this->call(json_encode($request));
         $results = $this->parseResult($response);
 
         $results['page'] = $page;
@@ -141,7 +167,10 @@ class Asset extends AbstractModel
         $assets = [];
 
         foreach ($response->result->results as $res) {
-            $asset = Asset::findOrNew($res->id);
+            $asset = Asset::withTrashed()->findOrNew($res->id);
+            if ($asset->trashed()) {
+                $asset->restore();
+            }
             $asset->fillFrom($res);
             $assets[] = $asset;
         }
@@ -176,41 +205,61 @@ class Asset extends AbstractModel
         return head($array);
     }
 
-    private function buildQuery(string $authKey, string $type, int $page, int $perPage, Carbon $since)
+    private function buildExistsQuery(string $authKey, string $type, array $ids)
     {
-        $request = [
-            'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date('Y-m-d_H:i:s'),
-            'method' => 'getAssetsByQuery',
-            'params' => [
-                $authKey,
+        return $this->buildBaseQuery(
+            $authKey,
+            $type,
+            [
                 [
-                    'query' => [
-                        [
-                            'operator' => 'and',
-                            'exact' => [
-                                'attribute' => 'Publish status',
-                                'value' => 'Web',
-                            ],
-                        ],
-                        [
-                            'operator' => 'and',
-                            'exact' => [
-                                'attribute' => 'assetType_pub',
-                                'value' => $type,
-                            ],
-                        ],
-                        [
-                            'operator' => 'and',
-                            'range' => [
-                                'field' => 'modDate',
-                                'min' => $since->timestamp * 1000, // milliseconds, not seconds
-                                'max' => null,
-                                'includeMin' => true,
-                                'includeMax' => false,
-                            ],
-                        ],
+                    'operator' => 'and',
+                    'subquery' => [
+                        'query' => collect($ids)
+                            ->map(function($id) {
+                                return [
+                                    'operator' => 'or',
+                                    'exact' => [
+                                        'field' => 'assetID',
+                                        'value' => $id,
+                                    ],
+                                ];
+                            })
+                            ->all(),
                     ],
                 ],
+            ],
+            [
+                [
+                    'page' => [
+                        'startIndex' => 0,
+                        'size' => count($ids),
+                    ],
+                    'data' => [
+                        'asset.id',
+                    ],
+                ],
+            ]
+        );
+    }
+
+    private function buildGetQuery(string $authKey, string $type, int $page, int $perPage, Carbon $since)
+    {
+        return $this->buildBaseQuery(
+            $authKey,
+            $type,
+            [
+                [
+                    'operator' => 'and',
+                    'range' => [
+                        'field' => 'modDate',
+                        'min' => $since->timestamp * 1000, // milliseconds, not seconds
+                        'max' => null,
+                        'includeMin' => true,
+                        'includeMax' => false,
+                    ],
+                ]
+            ],
+            [
                 [
                     'sort' => [
                         'field' => 'modDate',
@@ -223,16 +272,54 @@ class Asset extends AbstractModel
                     'data' => [
                         'asset.base',
                         'asset.attributes',
-                        // TODO: Do we need this? Opportunity to make response lighter?
-                        // 'asset.folders',
                         'asset.file',
                     ],
                 ],
-            ],
+            ]
+        );
+    }
+
+    private function buildBaseQuery(string $authKey, string $type, array $query, array $params)
+    {
+        return [
+            'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date('Y-m-d_H:i:s'),
+            'method' => 'getAssetsByQuery',
+            'params' => array_merge(
+                [
+                    $authKey,
+                    [
+                        'query' => array_merge(
+                            $query,
+                            [
+                                [
+                                    'operator' => 'and',
+                                    'exact' => [
+                                        'attribute' => 'Publish status',
+                                        'value' => 'Web',
+                                    ],
+                                ],
+                                [
+                                    'operator' => 'and',
+                                    'exact' => [
+                                        'attribute' => 'assetType_pub',
+                                        'value' => $type,
+                                    ],
+                                ],
+                                [
+                                    'operator' => 'not',
+                                    'exact' => [
+                                        'attribute' => 'Document type',
+                                        'value' => 'Expired',
+                                    ],
+                                ],
+                            ]
+                        ),
+                    ],
+                ],
+                $params
+            ),
             'dataContext' => 'json',
             'jsonrpc' => '2.0',
         ];
-
-        return json_encode($request);
     }
 }

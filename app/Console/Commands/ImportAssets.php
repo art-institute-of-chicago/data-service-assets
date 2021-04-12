@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Concerns\HasSince;
 use App\Models\Asset;
 
 class ImportAssets extends AbstractCommand
 {
+    use HasSince;
 
-    protected $signature = 'import:assets
-                            {--since= : How far back to scan for records}';
+    protected $signature = 'import:assets';
 
     protected $description = 'Import metadata about assets that changed since the last import';
 
@@ -16,8 +17,6 @@ class ImportAssets extends AbstractCommand
 
     public function handle()
     {
-        $this->info('Looking for resources since ' . $this->since->toIso8601String());
-
         foreach (Asset::$types as $type) {
             $page = 1;
             $result = Asset::instance()->callGetAssets($type, $page, $this->perPage, $this->since);

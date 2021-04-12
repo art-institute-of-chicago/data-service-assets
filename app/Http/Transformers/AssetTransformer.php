@@ -2,8 +2,6 @@
 
 namespace App\Http\Transformers;
 
-use Aic\Hub\Foundation\AbstractTransformer;
-
 class AssetTransformer extends AbstractTransformer
 {
     public function transform($asset)
@@ -40,17 +38,5 @@ class AssetTransformer extends AbstractTransformer
     protected function transformAsset($asset)
     {
         return [];
-    }
-
-    protected function getDateValue($asset, $fieldName)
-    {
-        if (!isset($asset->{$fieldName})) {
-            return null;
-        }
-
-        $date = $asset->{$fieldName};
-        $date->setTimezone('America/Chicago');
-
-        return $date->toIso8601String();
     }
 }

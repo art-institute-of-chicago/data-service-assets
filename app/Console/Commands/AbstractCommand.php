@@ -26,6 +26,17 @@ abstract class AbstractCommand extends BaseCommand
      */
     protected $since;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        foreach (class_uses_recursive($this) as $trait) {
+            if (method_exists($this, $method = 'init' . class_basename($trait))) {
+                $this->{$method}();
+            }
+        }
+    }
+
     /**
      * Here, we've extended the inherited execute method, which allows us to log times
      * for each command call. You can use `handle` in child classes as normal.
@@ -59,6 +70,14 @@ abstract class AbstractCommand extends BaseCommand
             } catch (\Exception $e) {
                 echo 'Cannot parse date in --since option';
             }
+        }
+
+        if ($this->hasOption('full') && $this->option('full')) {
+            $this->since = Command::never();
+        }
+
+        if ($this->hasOption('since') || $this->hasOption('full')) {
+            $this->info('Looking for resources since ' . $this->since->toIso8601String());
         }
 
         // Call Illuminate\Console\Command::execute
