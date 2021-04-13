@@ -11,4 +11,7 @@ class Deletion extends AbstractModel
 
     use HasUuid;
 
+    protected $dates = [
+        'source_deleted_at',
+    ];
 }

@@ -58,7 +58,7 @@ class Asset extends AbstractModel
 
         self::deleted(function ($model) {
             self::createInvalidation($model->id);
-            self::createDeletion($model->id);
+            self::createDeletion($model);
         });
     }
 
@@ -69,10 +69,11 @@ class Asset extends AbstractModel
         ]);
     }
 
-    public static function createDeletion($id)
+    public static function createDeletion($model)
     {
         Deletion::create([
-            'asset_id' => $id,
+            'asset_id' => $model->id,
+            'source_deleted_at' => $model->source_modified_at,
         ]);
     }
 

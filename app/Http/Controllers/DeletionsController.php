@@ -9,6 +9,6 @@ class DeletionsController extends BaseController
 
     protected $model = \App\Models\Deletion::class;
 
-    protected $transformer = \App\Http\Transformers\ActionTransformer::class;
+    protected $transformer = \App\Http\Transformers\DeletionsTransformer::class;
 
 }

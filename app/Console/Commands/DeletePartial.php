@@ -38,8 +38,12 @@ class DeletePartial extends AbstractCommand
 
             // Equal to catch any unpublished items we might have imported
             if ($asset->source_modified_at->lte($deletedAt)) {
-                $this->warn($asset->id . ' deleted');
+                // Pass this date to Deletion via Asset::createDeletion()
+                $asset->source_modified_at = $deletedAt;
+                $asset->save();
+
                 $asset->delete();
+                $this->warn($asset->id . ' deleted');
             } else {
                 $this->info($asset->id . ' newer than delete');
             }
