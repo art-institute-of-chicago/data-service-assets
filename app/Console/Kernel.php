@@ -51,6 +51,13 @@ class Kernel extends ConsoleKernel
         $schedule->command('invalidate')
             ->everyMinute()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        // WEB-1835, WEB-1838: Staging content shim checks prod NetX
+        if (config('app.env') === 'production') {
+            $schedule->command('delete:partial')
+                ->everyFiveMinutes()
+                ->withoutOverlapping(self::FOR_ONE_YEAR);
+        }
     }
 
     /**
