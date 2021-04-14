@@ -14,12 +14,18 @@ class DeleteFull extends AbstractCommand
     public function handle()
     {
         foreach (Asset::$types as $type) {
-            Asset::where('type', $type)->select(['id'])->chunk(10, function($assets) use ($type) {
+            $this->info('Checking ' . $type  . 's');
+
+            $bar = $this->output->createProgressBar(Asset::where('type', $type)->count());
+            $deletedCount = 0;
+
+            Asset::where('type', $type)->select(['id'])->chunk(200, function($assets) use ($type, $bar, $deletedCount) {
                 $ids = $assets->pluck('id')->all();
 
                 $result = Asset::instance()->callCheckPublished($type, $ids);
 
                 if (count($result->result->results) === count($ids)) {
+                    $bar->advance(count($ids));
                     return;
                 }
 
@@ -35,9 +41,17 @@ class DeleteFull extends AbstractCommand
 
                     $asset->delete();
 
-                    $this->info('Deleted ' . $deletedId);
+                    $deletedCount += 1;
                 }
+
+                $bar->advance(count($ids));
             });
+
+            $bar->finish();
+            $this->output->newLine(1);
+
+            $this->warn('Deleted ' . $deletedCount . ' ' . $type . 's');
+            $this->output->newLine(1);
         }
 
     }
