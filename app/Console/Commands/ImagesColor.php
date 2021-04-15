@@ -85,7 +85,15 @@ class ImagesColor extends AbstractCommand
             $color = $swatch->getColor()->asHSLColor();
 
             // For calculating percentage of pixel population
-            $size = getimagesize($file);
+            try {
+                $size = getimagesize($file);
+            } catch (\Throwable $e) {
+                $this->warn("{$id} - Cannot retrieve image size");
+                $image->color = null;
+                $image->image_colored_at = Carbon::now();
+                $image->save();
+                continue;
+            }
 
             if ($size === false || $size[0] === 0 || $size[1] === 0) {
                 $this->warn("{$id} - Invalid image size");
