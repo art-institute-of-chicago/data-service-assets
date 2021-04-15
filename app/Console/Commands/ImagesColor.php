@@ -87,6 +87,14 @@ class ImagesColor extends AbstractCommand
             // For calculating percentage of pixel population
             $size = getimagesize($file);
 
+            if ($size === false || $size[0] === 0 || $size[1] === 0) {
+                $this->warn("{$id} - Invalid image size");
+                $image->color = null;
+                $image->image_colored_at = Carbon::now();
+                $image->save();
+                continue;
+            }
+
             // @TODO Consider using HSV instead
             $out = [
                 'population' => $swatch->getPopulation(),
