@@ -10,6 +10,8 @@ return [
 
     'iiif_url' => env('IIIF_URL', 'https://www.artic.edu/iiif/2'),
 
+    'dest_api_url' => env('DEST_API_URL'),
+
     'uuid_prefix' => env('UUID_PREFIX'),
 
     'python_chunk_size' => is_numeric(env('PYTHON_CHUNK_SIZE')) ? (int) env('PYTHON_CHUNK_SIZE') : null,
