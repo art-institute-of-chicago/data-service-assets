@@ -14,4 +14,10 @@ class Deletion extends AbstractModel
     protected $dates = [
         'source_deleted_at',
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class);
+    }
+
 }

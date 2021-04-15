@@ -73,7 +73,7 @@ class Asset extends AbstractModel
     {
         Deletion::create([
             'asset_id' => $model->id,
-            'source_deleted_at' => $model->source_modified_at,
+            'source_deleted_at' => $model->source_modified_at ? $model->source_modified_at->toDateTimeString() : null,
         ]);
     }
 
