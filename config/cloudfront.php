@@ -8,4 +8,6 @@ return [
     'sdk_version' => env('AWS_SDK_VERSION', '2016-01-13'),
 
     'distribution' => env('AWS_CLOUDFRONT_DISTRIBUTION'),
+
+    'http_proxy' => env('AWS_HTTP_PROXY'),
 ];

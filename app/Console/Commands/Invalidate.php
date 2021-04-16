@@ -63,6 +63,9 @@ class Invalidate extends AbstractCommand
                 'key' => config('cloudfront.key'),
                 'secret' => config('cloudfront.secret'),
             ],
+            'http' => [
+                'proxy' => config('cloudfront.http_proxy'),
+            ]
         ]);
     }
 
