@@ -6,6 +6,9 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'v1'], function () {
 
+    Route::get('invalidations', 'InvalidationsController@index');
+    Route::get('invalidations/{id}', 'InvalidationsController@show');
+
     Route::get('deletions', 'DeletionsController@index');
     Route::get('deletions/{id}', 'DeletionsController@show');
 
