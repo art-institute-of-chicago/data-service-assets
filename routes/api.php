@@ -6,6 +6,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'v1'], function () {
 
+    Route::put('invalidations', 'InvalidationsController@create');
+
     Route::get('invalidations', 'InvalidationsController@index');
     Route::get('invalidations/{id}', 'InvalidationsController@show');
 
