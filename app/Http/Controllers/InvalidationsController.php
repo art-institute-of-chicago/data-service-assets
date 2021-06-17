@@ -33,6 +33,10 @@ class InvalidationsController extends BaseController
             ->diff($existingAssetIds)
             ->values();
 
+        $existingInvalidations->each(function($invalidation) {
+            $invalidation->touch();
+        });
+
         $newInvalidations = collect([]);
 
         $newAssetIds->each(function($assetId) use (&$newInvalidations) {

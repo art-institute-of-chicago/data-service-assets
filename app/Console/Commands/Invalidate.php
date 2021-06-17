@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Aws\CloudFront\CloudFrontClient;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 use App\Models\Asset;
 use App\Models\Invalidation;
 
@@ -26,7 +27,11 @@ class Invalidate extends AbstractCommand
 
         // https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html#InvalidationLimits
         // With the * wildcard, we can have requests for up to 15 invalidation paths in progress at one time.
-        $invalidations = Invalidation::limit(15)->get();
+        $invalidations = Invalidation::query()
+            // IMG-35: Allow IIIF server 5 min to process each image
+            ->where('updated_at', '<', Carbon::now()->subMinutes(5))
+            ->limit(15)
+            ->get();
 
         if ($invalidations->count() < 1) {
             $this->info('No invalidations outstanding');
