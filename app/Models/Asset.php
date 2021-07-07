@@ -66,6 +66,7 @@ class Asset extends AbstractModel
     {
         Invalidation::create([
             'asset_id' => $id,
+            'priority' => 0,
         ]);
     }
 

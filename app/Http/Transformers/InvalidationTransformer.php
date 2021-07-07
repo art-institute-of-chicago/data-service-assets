@@ -12,6 +12,7 @@ class InvalidationTransformer extends AbstractTransformer
             'id' => $item->id,
             'asset_id' => $item->asset_id,
             'asset_uuid' => Asset::getHashedId($item->asset_id),
+            'priority' => $item->priority,
             'created_at' => $this->getDateValue($item, 'created_at'),
             'modified_at' => $this->getDateValue($item, 'updated_at'),
         ];

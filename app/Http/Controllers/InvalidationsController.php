@@ -21,6 +21,8 @@ class InvalidationsController extends BaseController
             throw new DetailedException('Missing parameter', 'Expecting asset_ids array', 400);
         }
 
+        $priority = $request->priority ?? 1;
+
         $existingInvalidations = Invalidation::query()
             ->whereIn('asset_id', $request->asset_ids)
             ->get();
@@ -33,15 +35,17 @@ class InvalidationsController extends BaseController
             ->diff($existingAssetIds)
             ->values();
 
-        $existingInvalidations->each(function($invalidation) {
+        $existingInvalidations->each(function($invalidation) use ($priority) {
+            $invalidation->priority = $priority;
             $invalidation->touch();
         });
 
         $newInvalidations = collect([]);
 
-        $newAssetIds->each(function($assetId) use (&$newInvalidations) {
+        $newAssetIds->each(function($assetId) use (&$newInvalidations, $priority) {
             $invalidation = Invalidation::create([
                 'asset_id' => $assetId,
+                'priority' => $priority,
             ]);
 
             $newInvalidations->push($invalidation);

@@ -29,7 +29,15 @@ class Invalidate extends AbstractCommand
         // With the * wildcard, we can have requests for up to 15 invalidation paths in progress at one time.
         $invalidations = Invalidation::query()
             // IMG-35: Allow IIIF server 10 min to process each image
-            ->where('updated_at', '<', Carbon::now()->subMinutes(10))
+            ->where(function($query) {
+                $query->where('priority', '<', 1);
+                $query->where('updated_at', '<', Carbon::now()->subMinutes(10));
+            })
+            // ...but don't wait for invalidations submitted through the endpoint
+            ->orWhere('priority', '>', 0)
+            // Process highest priority first, then oldest first
+            ->orderBy('priority', 'desc')
+            ->orderBy('updated_at', 'asc')
             ->limit(15)
             ->get();
 
