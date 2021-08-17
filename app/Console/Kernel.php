@@ -49,8 +49,7 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping(self::FOR_ONE_YEAR);
 
         $schedule->command('invalidate')
-            ->everyMinute()
-            ->withoutOverlapping(self::FOR_ONE_YEAR);
+            ->everyMinute();
 
         // WEB-1835, WEB-1838: Staging content shim checks prod NetX
         if (config('app.env') === 'production') {
