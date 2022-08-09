@@ -35,14 +35,14 @@ class InvalidationsController extends BaseController
             ->diff($existingAssetIds)
             ->values();
 
-        $existingInvalidations->each(function($invalidation) use ($priority) {
+        $existingInvalidations->each(function ($invalidation) use ($priority) {
             $invalidation->priority = $priority;
             $invalidation->touch();
         });
 
         $newInvalidations = collect([]);
 
-        $newAssetIds->each(function($assetId) use (&$newInvalidations, $priority) {
+        $newAssetIds->each(function ($assetId) use (&$newInvalidations, $priority) {
             $invalidation = Invalidation::create([
                 'asset_id' => $assetId,
                 'priority' => $priority,

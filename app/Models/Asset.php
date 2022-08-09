@@ -189,6 +189,7 @@ class Asset extends AbstractModel
 
         foreach ($response->result->results as $res) {
             $asset = Asset::withTrashed()->findOrNew($res->id);
+
             if ($asset->trashed()) {
                 $asset->restore();
             }
@@ -236,7 +237,7 @@ class Asset extends AbstractModel
                     'operator' => 'and',
                     'subquery' => [
                         'query' => collect($ids)
-                            ->map(function($id) {
+                            ->map(function ($id) {
                                 return [
                                     'operator' => 'or',
                                     'exact' => [
