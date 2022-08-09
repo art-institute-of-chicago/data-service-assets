@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Concerns\HasSince;
+use Aic\Hub\Foundation\Console\Concerns\HasSince;
 use App\Models\Asset;
 use Carbon\Carbon;
 
