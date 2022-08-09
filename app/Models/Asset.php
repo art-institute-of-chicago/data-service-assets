@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
-use App\Models\Behaviors\Singletonable;
 use App\Models\Behaviors\SourceCallable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,7 +13,7 @@ use Aic\Hub\Foundation\AbstractModel;
 class Asset extends AbstractModel
 {
 
-    use Singletonable, SourceCallable, SoftDeletes;
+    use SourceCallable, SoftDeletes;
 
     protected $dates = [
         'image_attempted_at',
