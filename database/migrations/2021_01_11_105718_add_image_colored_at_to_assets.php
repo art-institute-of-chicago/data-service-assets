@@ -16,9 +16,6 @@ class AddImageColoredAtToAssets extends Migration
         Schema::table('assets', function (Blueprint $table) {
             $table->timestamp('image_colored_at')->nullable()->after('image_downloaded_at');
         });
-
-        // We only want to run this once, not make it the default
-        DB::update('UPDATE `assets` SET image_colored_at=now() WHERE color IS NOT NULL');
     }
 
     /**
