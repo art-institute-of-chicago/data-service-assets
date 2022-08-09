@@ -34,11 +34,6 @@
             "App\\": "app/"
         }
     },
-    "autoload-dev": {
-        "classmap": [
-            "database/"
-        ]
-    },
     "extra": {
         "laravel": {
             "dont-discover": [
@@ -46,11 +41,9 @@
         }
     },
     "scripts": {
-        "post-root-package-install": [
-            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "php artisan key:generate"
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall"
@@ -58,9 +51,13 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+        "lint": [
+            "php-cs-fixer fix --diff --config vendor/aic/data-hub-foundation/.php-cs-fixer.dist.php",
+            "DIR='vendor/aic/data-hub-foundation' && [ -L ${DIR} ] && [ -d ${DIR} ] && cd ${DIR} && php-cs-fixer fix --diff --config .php-cs-fixer.dist.php || true"
+        ],
+        "foundation": [
+            "php vendor/aic/data-hub-foundation/composer-dev.php",
+            "COMPOSER=composer-dev.json composer update aic/data-hub-foundation"
         ]
     },
     "config": {
