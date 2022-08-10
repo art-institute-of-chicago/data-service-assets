@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8de066123245cba410c4c2c180a41b1",
+    "content-hash": "bcd297067fe87202fd5736e67198796f",
     "packages": [
         {
             "name": "aic/data-hub-foundation",
@@ -10654,11 +10654,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "aic/data-hub-foundation": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"

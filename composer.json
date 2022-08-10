@@ -1,5 +1,5 @@
 {
-    "name": "aic/data-service-template",
+    "name": "aic/data-service-assets",
     "description": "A data service for the AIC data hub.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
@@ -67,5 +67,7 @@
         "allow-plugins": {
             "netresearch/composer-patches-plugin": true
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
