@@ -164,6 +164,9 @@ class Asset extends AbstractModel
 
     public function callGetAssets(string $type, int $page, int $perPage, Carbon $since)
     {
+        // Go back an extra hour to make sure we're getting anything that might fall in the gaps between calls
+        $since->subHour();
+
         $authKey = $this->authenticate();
         $request = $this->buildGetQuery($authKey, $type, $page, $perPage, $since);
         $response = $this->call(json_encode($request));
