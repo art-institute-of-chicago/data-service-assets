@@ -45,7 +45,7 @@ class ImagesColor extends AbstractCommand
                 $palette = Palette::generate($manager->make($contents));
             } catch (NotSupportedException $e) {
                 throw $e;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // TODO: Resolve [ErrorException]  max(): Array must contain at least one element
                 // See vendor/marijnvdwerf/material-palette/src/Palette.php:81
                 // https://github.com/marijnvdwerf/material-palette-php/issues/6
