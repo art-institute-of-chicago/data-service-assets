@@ -14,7 +14,7 @@ class DeleteFull extends AbstractCommand
     public function handle()
     {
         foreach (Asset::$types as $type) {
-            $this->info('Checking ' . $type  . 's');
+            $this->info('Checking ' . $type . 's');
 
             $bar = $this->output->createProgressBar(Asset::where('type', $type)->count());
             $deletedCount = 0;
@@ -23,7 +23,7 @@ class DeleteFull extends AbstractCommand
             Asset::where('type', $type)->select([
                 'id',
                 'source_modified_at',
-            ])->chunk(200, function($assets) use ($type, $bar, &$deletedCount) {
+            ])->chunk(200, function ($assets) use ($type, $bar, &$deletedCount) {
                 $ids = $assets->pluck('id')->all();
 
                 $result = Asset::instance()->callCheckPublished($type, $ids);

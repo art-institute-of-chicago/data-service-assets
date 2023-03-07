@@ -38,7 +38,7 @@ class DeleteFix extends AbstractCommand
             $deletion->source_deleted_at = $asset->source_modified_at;
             $deletion->save();
 
-            $this->warn('Deletion ' . $deletion->id .' copied date from asset ' . $asset->id . ': ' . $deletion->source_deleted_at->toISOString());
+            $this->warn('Deletion ' . $deletion->id . ' copied date from asset ' . $asset->id . ': ' . $deletion->source_deleted_at->toISOString());
         }
     }
 }

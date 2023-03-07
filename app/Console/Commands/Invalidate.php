@@ -29,7 +29,7 @@ class Invalidate extends AbstractCommand
         // With the * wildcard, we can have requests for up to 15 invalidation paths in progress at one time.
         $invalidations = Invalidation::query()
             // IMG-35: Allow IIIF server 10 min to process each image
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('priority', '<', 1);
                 $query->where('updated_at', '<', Carbon::now()->subMinutes(10));
             })
@@ -49,7 +49,7 @@ class Invalidate extends AbstractCommand
         // WEB-1858: Consider storing URLs instead of ids?
         $urls = $invalidations
             ->pluck('asset_id')
-            ->map(function($assetId) {
+            ->map(function ($assetId) {
                 return '/iiif/2/' . Asset::getHashedId($assetId) . '/*';
             })
             ->all();
@@ -62,7 +62,7 @@ class Invalidate extends AbstractCommand
             $this->info($url);
         }
 
-        $invalidations->each(function($invalidation) {
+        $invalidations->each(function ($invalidation) {
             $invalidation->delete();
         });
     }
