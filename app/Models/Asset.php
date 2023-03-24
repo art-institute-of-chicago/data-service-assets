@@ -300,6 +300,7 @@ class Asset extends AbstractModel
     private function buildBaseQuery(string $type, array $query, array $params)
     {
         return [
+            'jsonrpc' => '2.0',
             'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date('Y-m-d_H:i:s'),
             'method' => 'getAssetsByQuery',
             'params' => array_merge(
@@ -335,8 +336,6 @@ class Asset extends AbstractModel
                 ],
                 $params
             ),
-            'dataContext' => 'json',
-            'jsonrpc' => '2.0',
         ];
     }
 }

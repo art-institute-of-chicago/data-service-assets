@@ -16,7 +16,10 @@ trait SourceCallable
 
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: apiToken ' .config('source.password'),
+        ]);
 
         // WEB-874: If connection or response take longer than 30 seconds, give up
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
