@@ -154,8 +154,7 @@ class Asset extends AbstractModel
 
     public function callCheckPublished(string $type, array $ids)
     {
-        $authKey = $this->authenticate();
-        $request = $this->buildExistsQuery($authKey, $type, $ids);
+        $request = $this->buildExistsQuery($type, $ids);
         $response = $this->call(json_encode($request));
 
         return json_decode($response);
@@ -166,8 +165,7 @@ class Asset extends AbstractModel
         // Go back an extra hour to make sure we're getting anything that might fall in the gaps between calls
         $since->subHour();
 
-        $authKey = $this->authenticate();
-        $request = $this->buildGetQuery($authKey, $type, $page, $perPage, $since);
+        $request = $this->buildGetQuery($type, $page, $perPage, $since);
         $response = $this->call(json_encode($request));
         $results = $this->parseResult($response);
 
@@ -227,10 +225,9 @@ class Asset extends AbstractModel
         return head($array);
     }
 
-    private function buildExistsQuery(string $authKey, string $type, array $ids)
+    private function buildExistsQuery(string $type, array $ids)
     {
         return $this->buildBaseQuery(
-            $authKey,
             $type,
             [
                 [
@@ -264,10 +261,9 @@ class Asset extends AbstractModel
         );
     }
 
-    private function buildGetQuery(string $authKey, string $type, int $page, int $perPage, Carbon $since)
+    private function buildGetQuery(string $type, int $page, int $perPage, Carbon $since)
     {
         return $this->buildBaseQuery(
-            $authKey,
             $type,
             [
                 [
@@ -301,14 +297,13 @@ class Asset extends AbstractModel
         );
     }
 
-    private function buildBaseQuery(string $authKey, string $type, array $query, array $params)
+    private function buildBaseQuery(string $type, array $query, array $params)
     {
         return [
             'id' => 'callGetAssets__data-service-assets__' . config('app.env') . '__' . date('Y-m-d_H:i:s'),
             'method' => 'getAssetsByQuery',
             'params' => array_merge(
                 [
-                    $authKey,
                     [
                         'query' => array_merge(
                             $query,
