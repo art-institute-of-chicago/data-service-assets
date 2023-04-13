@@ -207,8 +207,8 @@ class Asset extends AbstractModel
         $this->title = $source->name;
         $this->type = $this->head($source->attributes->assetType_pub);
         $this->checksum = $source->file->checksum;
-        $this->width = $source->file->width;
-        $this->height = $source->file->height;
+        $this->width = $source->file->width ?? 0;
+        $this->height = $source->file->height ?? 0;
         $this->external_website = $this->head($source->attributes->{'Related website'});
         $this->alt_text = $this->head($source->attributes->{'Alt tag'});
         $this->publish_status = $source->attributes->{'Publish status'};
