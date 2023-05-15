@@ -4,7 +4,7 @@ return [
     'api_url' => env('SOURCE_API_URL'),
 
     'username' => env('SOURCE_USERNAME'),
-    'password' => env('SOURCE_PASSWORD'),
+    'token' => env('SOURCE_TOKEN'),
 
     'shim_api_url' => env('SHIM_API_URL'),
 

@@ -4,22 +4,6 @@ namespace App\Models\Behaviors;
 
 trait SourceCallable
 {
-    public function authenticate()
-    {
-        $request = [
-            'id' => 'authenticate__data-service-assets__' . config('app.env') . date('Y-m-d_H:i:s'),
-            'method' => 'authenticate',
-            'params' => [
-                config('source.username'),
-                config('source.password'),
-            ],
-            'dataContext' => 'json',
-            'jsonrpc' => '2.0',
-        ];
-
-        $response = json_decode($this->call(json_encode($request)));
-        return $response->result->sessionKey ?? null;
-    }
 
     protected function call($request)
     {
@@ -32,7 +16,10 @@ trait SourceCallable
 
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: apiToken ' .config('source.token'),
+        ]);
 
         // WEB-874: If connection or response take longer than 30 seconds, give up
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
