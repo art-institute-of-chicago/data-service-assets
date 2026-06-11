@@ -14,11 +14,11 @@ class Invalidate extends AbstractCommand
 
     protected $description = 'Process all outstanding invalidations';
 
-    private $client;
+    private $cloudFrontClient;
 
     public function handle()
     {
-        $this->client = $this->getClient();
+        $this->cloudFrontClient = $this->getCloudFrontClient();
 
         if ($this->hasInProgressInvalidation()) {
             $this->info('Waiting on an invalidation to finish');
@@ -67,7 +67,7 @@ class Invalidate extends AbstractCommand
         });
     }
 
-    private function getClient()
+    private function getCloudFrontClient()
     {
         return new CloudFrontClient([
             'region' => config('cloudfront.region'),
@@ -84,7 +84,7 @@ class Invalidate extends AbstractCommand
 
     private function hasInProgressInvalidation()
     {
-        $list = $this->client
+        $list = $this->cloudFrontClient
             ->listInvalidations([
                 'DistributionId' => config('cloudfront.distribution')
             ])
@@ -99,7 +99,7 @@ class Invalidate extends AbstractCommand
 
     private function createInvalidationRequest($paths = [])
     {
-        return $this->client->createInvalidation([
+        $this->cloudFrontClient->createInvalidation([
             'DistributionId' => config('cloudfront.distribution'),
             'InvalidationBatch' => [
                 'Paths' => [
