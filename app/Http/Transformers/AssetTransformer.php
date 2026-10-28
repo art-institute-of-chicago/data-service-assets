@@ -9,6 +9,7 @@ class AssetTransformer extends AbstractTransformer
         $sharedFields = [
             'id' => $asset->id,
             'title' => $asset->title,
+            'display_title' => $asset->display_title,
             'content' => $asset->external_website,
             'alt_text' => $asset->alt_text,
             'is_educational_resource' => collect($asset->publish_status)->contains('Educational Resources'),
