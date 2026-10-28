@@ -205,6 +205,7 @@ class Asset extends AbstractModel
     {
         $this->id = $source->id;
         $this->title = $source->name;
+        $this->display_title = $this->head($source->attributes->{'Track Title'});
         $this->type = $this->head($source->attributes->assetType_pub);
         $this->checksum = $source->file->checksum;
         $this->width = $source->file->width ?? 0;
