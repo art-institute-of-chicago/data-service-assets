@@ -128,6 +128,9 @@ class Invalidate extends AbstractCommand
                 "Content-Type: application/json",
                 "Authorization: Bearer " . config('cloudflare.key'),
             ]);
+            if ($proxy = config('cloudfront.http_proxy')) {
+                curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            }
 
             ob_start();
             curl_exec($ch);
